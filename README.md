@@ -46,9 +46,9 @@ A smart agriculture management and AI advisory web platform built with **Flask**
    ```
 
 3. **Set up the MySQL database**
-   - Import `database.sql` into your MySQL server:
+   - Import `database/database.sql` into your MySQL server:
      ```bash
-     mysql -u root -p < database.sql
+     mysql -u root -p < database/database.sql
      ```
 
 4. **Configure environment variables**
@@ -65,7 +65,7 @@ A smart agriculture management and AI advisory web platform built with **Flask**
    ```
    Open `http://127.0.0.1:5000` in your browser.
 
-## Default Demo Accounts (`database.sql`)
+## Default Demo Accounts (`database/database.sql`)
 
 - **Admin:** `admin` / `admin`
 - **Branch:** `Krishi` / `branch123`
