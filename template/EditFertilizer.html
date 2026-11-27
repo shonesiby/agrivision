@@ -1,0 +1,41 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Edit Fertilizer{% endblock %}
+{% block page_title %}Edit Fertilizer Attributes{% endblock %}
+
+{% block content %}
+<form id="form1" name="form1" method="post" action="/EditFertilizer">
+    <input type="hidden" name="id" value="{{ data['fertilizer_id'] }}" />
+
+    <table>
+        <tr>
+            <th>Field</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td><input type="text" name="name" value="{{ data['name'] }}" required
+                    style="width: 100%; border: 1px solid #E5E7EB; border-radius: 8px; padding: 12px 15px; font-size: 15px; background-color: var(--white); color: var(--text-dark); transition: all 0.3s ease;" />
+            </td>
+        </tr>
+        <tr>
+            <td>Dosage</td>
+            <td><input type="text" name="dosage" value="{{ data['dosage'] }}" required
+                    style="width: 100%; border: 1px solid #E5E7EB; border-radius: 8px; padding: 12px 15px; font-size: 15px; background-color: var(--white); color: var(--text-dark); transition: all 0.3s ease;" />
+            </td>
+        </tr>
+        <tr>
+            <td>Purpose</td>
+            <td><textarea name="purpose" rows="3" required
+                    style="width: 100%; border: 1px solid #E5E7EB; border-radius: 8px; padding: 12px 15px; font-size: 15px; background-color: var(--white); color: var(--text-dark); transition: all 0.3s ease;">{{ data['purpose'] }}</textarea>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <button type="submit" name="Submit" class="btn btn-solid">Update Fertilizer</button>
+            </td>
+        </tr>
+    </table>
+</form>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base_branch.html" %}
+
+{% block title %}View Queries{% endblock %}
+{% block page_title %}Farmer Queries{% endblock %}
+
+{% block content %}
+<table>
+    <tr>
+        <th>User ID</th>
+        <th>Farmer Query</th>
+        <th>Our Reply</th>
+        <th style="width: 150px;">Action</th>
+    </tr>
+    {% for row in data %}
+    <tr>
+        <td>{{ row['user_id'] }}</td>
+        <td>{{ row['user_query'] }}</td>
+        <td>
+            {% if row['reply'] %}
+                {{ row['reply'] }}
+            {% else %}
+                <span style="color: var(--secondary);"><i class="fa-solid fa-clock"></i> Pending</span>
+            {% endif %}
+        </td>
+        <td>
+            <a href="/LinkReplyQuery?id={{ row['idqueries'] }}" class="btn btn-outline" style="padding: 5px 10px; font-size: 12px;">Reply</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

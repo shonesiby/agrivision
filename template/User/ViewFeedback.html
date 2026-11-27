@@ -1,0 +1,44 @@
+{% extends "base_user.html" %}
+
+{% block title %}View Feedback{% endblock %}
+{% block page_title %}Your Submitted Feedback{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 20px;">
+    {% if not data %}
+        <div style="background: rgba(16, 185, 129, 0.1); border-left: 4px solid var(--primary); padding: 15px 20px; border-radius: 4px; color: var(--text-dark);">
+            <i class="fa-solid fa-info-circle" style="color: var(--primary); margin-right: 10px;"></i> You have not submitted any feedback yet. <a href="LinkSendFeedback" style="color: var(--primary); text-decoration: underline; font-weight: 600;">Share your thoughts</a>.
+        </div>
+    {% endif %}
+</div>
+
+{% if data %}
+<table>
+    <tr>
+        <th style="width: 15%;">Date</th>
+        <th style="width: 35%;">Your Feedback</th>
+        <th style="width: 35%;">Branch Reply</th>
+        <th style="width: 15%;">Reply Date</th>
+    </tr>
+
+    {% for row in data %}
+    <tr>
+        <td>{{ row['date_of_feedback'] }}</td>
+        <td>{{ row['feedback_details'] }}</td>
+        <td>
+            {% if row['reply'] %}
+                {{ row['reply'] }}
+            {% else %}
+                <span style="color: var(--text-light); font-style: italic;">Awaiting response...</span>
+            {% endif %}
+        </td>
+        <td>{{ row['reply_date'] or '-' }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<div style="text-align: center; margin-top: 30px;">
+    <a href="LinkSendFeedback" class="btn btn-outline"><i class="fa-solid fa-plus"></i> Submit New Feedback</a>
+</div>
+{% endif %}
+{% endblock %}

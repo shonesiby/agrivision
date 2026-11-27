@@ -1,0 +1,26 @@
+{% extends "base_admin.html" %}
+
+{% block title %}View Fertilizer{% endblock %}
+{% block page_title %}Fertilizer Catalog{% endblock %}
+
+{% block content %}
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Dosage</th>
+        <th>Purpose Of Fertilizer</th>
+        <th>Action</th>
+    </tr>
+    {% for row in data %}
+    <tr>
+        <td>{{ row['name'] }}</td>
+        <td>{{ row['dosage'] }}</td>
+        <td>{{ row['purpose'] }}</td>
+        <td>
+            <a href="/LinkEditFertilizer?id={{ row['fertilizer_id'] }}" class="btn btn-outline" style="padding: 5px 10px; font-size: 12px; margin-right: 5px;">Edit</a>
+            <a href="/delete_fertilizer/{{ row['fertilizer_id'] }}" class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;" onclick="return confirm('Delete this fertilizer entry?')">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

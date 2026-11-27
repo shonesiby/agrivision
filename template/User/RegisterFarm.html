@@ -1,0 +1,55 @@
+{% extends "base_user.html" %}
+
+{% block title %}Register Farm{% endblock %}
+{% block page_title %}Farm Registration Profile{% endblock %}
+
+{% block content %}
+<div style="max-width: 700px; margin: 0 auto;">
+    <div
+        style="background: rgba(16, 185, 129, 0.1); border-left: 4px solid var(--primary); padding: 15px 20px; border-radius: 4px; color: var(--text-dark); margin-bottom: 25px;">
+        <i class="fa-solid fa-file-signature" style="color: var(--primary); margin-right: 10px;"></i> Please provide
+        accurate details about your farm to access branch services and subsidies.
+    </div>
+
+    <form id="form1" name="form1" method="post" action="FarmRegistration" enctype="multipart/form-data">
+        <table>
+            <tr>
+                <th colspan="2">Farm Information</th>
+            </tr>
+            <tr>
+                <td style="width: 30%;">Complete Farm Address</td>
+                <td>
+                    <textarea name="TxtFarmAddress" rows="3" required
+                        placeholder="Street address, village, taluk..."></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>Farm Details & Size</td>
+                <td>
+                    <textarea name="TxtFarmDetails" rows="4" required
+                        placeholder="Total area in acres, primary soil type, irrigation facilities..."></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>Verification Image</td>
+                <td>
+                    <div
+                        style="border: 2px dashed #E5E7EB; border-radius: 8px; padding: 20px; text-align: center; background-color: #F9FAFB;">
+                        <i class="fa-solid fa-cloud-arrow-up"
+                            style="font-size: 24px; color: var(--primary); margin-bottom: 10px;"></i><br>
+                        <input type="file" name="image" required style="max-width: 100%;" />
+                        <p style="font-size: 12px; color: var(--text-light); margin-top: 10px; margin-bottom: 0;">Upload
+                            a clear photo of your farm or land document (Max 5MB)</p>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center; padding: 25px;">
+                    <button type="submit" name="Submit" class="btn btn-solid"
+                        style="width: 100%; font-size: 16px;">Submit Farm Registration</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+{% endblock %}

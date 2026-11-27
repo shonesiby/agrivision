@@ -1,0 +1,23 @@
+{% extends "base_branch.html" %}
+
+{% block title %}View Subsidies{% endblock %}
+{% block page_title %}Available Subsidy Programs{% endblock %}
+
+{% block content %}
+<table>
+    <tr>
+        <th>Program Date</th>
+        <th>Description</th>
+        <th style="width: 200px;">Review Requests</th>
+    </tr>
+    {% for row in data %}
+    <tr>
+        <td>{{ row['current_date'] }}</td>
+        <td>{{ row['description'] }}</td>
+        <td>
+            <a href="/ViewRequest?id={{ row['idsubsidy'] }}" class="btn btn-outline" style="padding: 5px 15px; font-size: 13px;">View Applications</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

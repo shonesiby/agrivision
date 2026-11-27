@@ -1,0 +1,40 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Select District{% endblock %}
+{% block page_title %}Choose District for New Branch{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 20px;">
+    {% if not data %}
+        <div style="background: rgba(16, 185, 129, 0.1); border-left: 4px solid var(--primary); padding: 15px 20px; border-radius: 4px; color: var(--text-dark);">
+            <i class="fa-solid fa-info-circle" style="color: var(--primary); margin-right: 10px;"></i> No districts available. Please add districts first.
+        </div>
+    {% endif %}
+</div>
+
+{% if data %}
+<table>
+    <tr>
+        <th>District Name</th>
+        <th style="width: 200px; text-align: center;">Action</th>
+    </tr>
+    {% for row in data %}
+    <tr>
+        <td>
+            <div style="font-weight: 600; color: var(--text-dark);">
+                <i class="fa-solid fa-map-location-dot" style="color: var(--primary); margin-right: 8px;"></i>
+                {{ row['name'] }}
+            </div>
+        </td>
+        <td style="text-align: center;">
+            <a href="/LinkAfterDistrictSelect?id={{ row['iddistrict'] }}" class="btn btn-outline" style="padding: 6px 15px; font-size: 13px;">Register Branch Here</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<div style="text-align: center; margin-top: 30px;">
+    <a href="/Adminhome" class="btn btn-solid"><i class="fa-solid fa-arrow-left" style="margin-right: 8px;"></i> Return to Dashboard</a>
+</div>
+{% endif %}
+{% endblock %}

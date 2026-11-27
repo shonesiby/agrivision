@@ -1,0 +1,21 @@
+{% extends "base_user.html" %}
+
+{% block title %}Search Branches{% endblock %}
+{% block page_title %}Find an Agriculture Branch{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto; text-align: center;">
+    <div style="margin-bottom: 30px; color: var(--text-light);">
+        <i class="fa-solid fa-search" style="font-size: 30px; color: var(--primary); margin-bottom: 15px; display: block;"></i>
+        <p>Search for an agriculture department branch by location, name, or pincode to access local farming services.</p>
+    </div>
+
+    <form name="form1" method="post" action="search_branch">
+        <div style="margin-bottom: 25px;">
+            <input type="text" name="txtSearch" required placeholder="Enter search keywords..." style="width: 100%; padding: 15px 20px; font-size: 16px; border: 2px solid #E5E7EB; border-radius: 30px; outline: none; transition: border-color 0.3s ease;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='#E5E7EB'">
+        </div>
+        
+        <button type="submit" class="btn btn-solid" style="padding: 12px 40px; font-size: 16px; border-radius: 30px;"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+    </form>
+</div>
+{% endblock %}

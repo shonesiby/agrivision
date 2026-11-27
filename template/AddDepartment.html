@@ -1,0 +1,45 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Add Department Branch{% endblock %}
+{% block page_title %}Department Registration{% endblock %}
+
+{% block content %}
+<form id="form1" name="form1" method="post" action="BranchRegistration">
+    <table>
+        <tr>
+            <th>Field</th>
+            <th>Details</th>
+        </tr>
+        <tr>
+            <td>Branch Name</td>
+            <td><input type="text" name="TxtBid" required /></td>
+        </tr>
+        <tr>
+            <td>Address</td>
+            <td><textarea name="TxtAddress" rows="3" required></textarea></td>
+        </tr>
+        <tr>
+            <td>Phone</td>
+            <td><input type="text" name="TxtPhone" required pattern="[6-9]{1}[0-9]{9}"
+                    title="Incorrect phone no (10 digits starting with 6-9)" /></td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td><input type="email" name="TxtEmail" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" /></td>
+        </tr>
+        <tr>
+            <td>Pincode</td>
+            <td><input type="text" name="TxtPincode" required pattern="[1-9]{1}[0-9]{5}"
+                    title="Incorrect pincode (6 digits)" /></td>
+        </tr>
+        <tr>
+            <td>Password</td>
+            <td><input type="password" name="TxtPassword" required /></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="submit" name="Submit" class="btn btn-solid">Register Branch</button></td>
+        </tr>
+    </table>
+</form>
+{% endblock %}

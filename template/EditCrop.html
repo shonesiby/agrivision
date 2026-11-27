@@ -1,0 +1,40 @@
+{% extends "base_branch.html" %}
+
+{% block title %}Edit Crop{% endblock %}
+{% block page_title %}Update Crop Details{% endblock %}
+
+{% block content %}
+<form id="form1" name="form1" method="post" action="/UpdateCrop">
+    <input type="hidden" name="id" id="dd" value="{{ data['crop_id'] }}">
+    
+    <table>
+        <tr>
+            <th colspan="2">Crop Information</th>
+        </tr>
+        <tr>
+            <td style="width: 25%;">Crop Name</td>
+            <td>
+                <input type="text" name="name" required value="{{ data['name'] }}" />
+            </td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td>
+                <textarea name="description" rows="4" required>{{ data['description'] }}</textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>Available Quantity</td>
+            <td>
+                <input type="number" name="quantity" required value="{{ data['quantity'] }}" min="1" />
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <button type="submit" name="Submit" class="btn btn-solid">Update Crop</button>
+            </td>
+        </tr>
+    </table>
+</form>
+{% endblock %}

@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Agrivision - Modern Agriculture</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Animations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <style>
+        :root {
+            --primary: #10B981;
+            /* Emerald Green */
+            --primary-dark: #059669;
+            --secondary: #F59E0B;
+            /* Amber */
+            --text-dark: #1F2937;
+            --text-light: #6B7280;
+            --bg-light: #F3F4F6;
+            --white: #FFFFFF;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+            background-color: var(--white);
+            overflow-x: hidden;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--primary);
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-logo i {
+            font-size: 28px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            display: inline-block;
+        }
+
+        .btn-outline {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-solid {
+            background: var(--primary);
+            color: var(--white);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-solid:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        }
+
+        /* HERO SECTION */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 100px 5% 50px;
+            background: linear-gradient(135deg, rgba(236, 253, 245, 0.8) 0%, rgba(255, 255, 255, 0.9) 100%);
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        /* Floating decoration circles */
+        .shape-1 {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, #34D399 100%);
+            opacity: 0.1;
+            top: -50px;
+            right: -50px;
+            z-index: 0;
+            filter: blur(40px);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape-2 {
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--secondary) 0%, #FBBF24 100%);
+            opacity: 0.1;
+            bottom: 10%;
+            left: -50px;
+            z-index: 0;
+            filter: blur(40px);
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
+
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+        }
+
+        .hero-content {
+            width: 50%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--primary);
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 24px;
+            animation: slideInDown 1s ease;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 5vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            color: var(--text-dark);
+            animation: slideInLeft 1s ease 0.2s both;
+        }
+
+        .hero-title span {
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-title span::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 30%;
+            bottom: 5px;
+            left: 0;
+            background: rgba(16, 185, 129, 0.2);
+            z-index: -1;
+            transform: skewX(-15deg);
+        }
+
+        .hero-text {
+            font-size: 18px;
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 40px;
+            animation: slideInLeft 1s ease 0.4s both;
+            max-width: 90%;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            animation: slideInUp 1s ease 0.6s both;
+        }
+
+        .hero-image-wrapper {
+            width: 50%;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .main-hero-img {
+            width: 80%;
+            border-radius: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            animation: fadeInRight 1.2s ease 0.3s both;
+            z-index: 2;
+        }
+
+        .img-card {
+            position: absolute;
+            background: var(--white);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 3;
+            animation: zoomIn 0.8s ease 1s both;
+        }
+
+        .img-card.top {
+            top: 20px;
+            right: 0;
+        }
+
+        .img-card.bottom {
+            bottom: -20px;
+            left: 20px;
+            animation-delay: 1.2s;
+        }
+
+        .img-card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+        }
+
+        .img-card-text h4 {
+            margin: 0 0 5px;
+            font-size: 16px;
+            color: var(--text-dark);
+        }
+
+        .img-card-text p {
+            margin: 0;
+            font-size: 14px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        /* FEATURES SECTION */
+        .section {
+            padding: 100px 5%;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-subtitle {
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 14px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            z-index: -1;
+            transition: transform 0.4s ease;
+            transform: scaleY(0);
+            transform-origin: bottom;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.2);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .feature-card:hover * {
+            color: var(--white) !important;
+            border-color: rgba(255, 255, 255, 0.3) !important;
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+            margin: 0 auto 25px;
+            transition: all 0.4s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        .feature-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+            transition: all 0.4s ease;
+        }
+
+        .feature-desc {
+            color: var(--text-light);
+            line-height: 1.6;
+            margin: 0;
+            transition: all 0.4s ease;
+        }
+
+        /* ABOUT / CTA SECTION */
+        .cta-section {
+            background: linear-gradient(135deg, var(--text-dark) 0%, #111827 100%);
+            border-radius: 30px;
+            margin: 0 5% 100px;
+            padding: 80px 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-content {
+            width: 60%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .cta-title {
+            color: var(--white);
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .cta-text {
+            color: #9CA3AF;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .cta-pattern {
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, rgba(255, 255, 255, 0) 70%);
+            z-index: 1;
+        }
+
+        /* DEPARTMENTS SECTION */
+        .departments-bg {
+            background-color: var(--bg-light);
+            padding: 100px 5%;
+        }
+
+        .dept-grid {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .dept-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 30px;
+            width: calc(33.333% - 20px);
+            min-width: 300px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dept-card::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.15);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .dept-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .dept-card:hover::after {
+            opacity: 1;
+        }
+
+        .dept-icon {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .dept-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .dept-person {
+            font-size: 15px;
+            color: var(--text-light);
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .dept-detail {
+            font-size: 14px;
+            color: #9CA3AF;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .dept-contact {
+            border-top: 1px solid #E5E7EB;
+            padding-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .dept-contact span {
+            font-size: 14px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dept-contact i {
+            color: var(--primary);
+        }
+
+        /* MAP */
+        .map-container {
+            margin: 0;
+            height: 400px;
+            width: 100%;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            filter: grayscale(80%) contrast(1.2);
+            transition: all 0.5s ease;
+        }
+
+        .map-container:hover iframe {
+            filter: grayscale(0%) contrast(1);
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--text-dark);
+            color: var(--white);
+            padding: 70px 5% 30px;
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 50px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 50px;
+        }
+
+        .footer-col {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-logo {
+            color: var(--white);
+            font-size: 28px;
+            font-weight: 800;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo i {
+            color: var(--primary);
+        }
+
+        .footer-desc {
+            color: #9CA3AF;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: #9CA3AF;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            color: #9CA3AF;
+            font-size: 14px;
+        }
+
+        .scroll-top {
+            width: 45px;
+            height: 45px;
+            background: var(--primary);
+            color: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+        }
+
+        .scroll-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-5px);
+        }
+
+        /* RESPONSIVE */
+        .mobile-menu-btn {
+            display: none;
+            font-size: 24px;
+            background: none;
+            border: none;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        @media (max-width: 991px) {
+            .hero {
+                flex-direction: column;
+                padding-top: 120px;
+                text-align: center;
+            }
+
+            .hero-content,
+            .hero-image-wrapper {
+                width: 100%;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .hero-text {
+                margin: 0 auto 30px;
+            }
+
+            .hero-actions {
+                justify-content: center;
+                margin-bottom: 50px;
+            }
+
+            .main-hero-img {
+                width: 90%;
+            }
+
+            .cta-section {
+                flex-direction: column;
+                text-align: center;
+                padding: 40px 30px;
+            }
+
+            .cta-content {
+                width: 100%;
+                margin-bottom: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-wrap: wrap;
+                background: rgba(255, 255, 255, 0.98);
+            }
+
+            .nav-links,
+            .nav-actions {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-links {
+                order: 3;
+                margin-top: 20px;
+                gap: 15px;
+            }
+
+            .nav-actions {
+                order: 4;
+                margin-top: 15px;
+                gap: 15px;
+            }
+
+            .navbar.menu-active .nav-links,
+            .navbar.menu-active .nav-actions {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+                order: 2;
+            }
+
+            .brand-logo {
+                order: 1;
+            }
+
+            .dept-card {
+                width: 100%;
+            }
+        }
+
+        /* Utility for fade effect */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="HomePage" class="brand-logo">
+            <i class="fa-solid fa-seedling"></i>
+            Agrivision
+        </a>
+
+        <div class="nav-links">
+            <a href="HomePage">Home</a>
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#departments">Departments</a>
+        </div>
+
+        <div class="nav-actions">
+            <a href="ViewDistrict" class="btn btn-outline">Sign Up</a>
+            <a href="Login" class="btn btn-solid">Login</a>
+        </div>
+
+        <button class="mobile-menu-btn">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="home">
+        <div class="shape-1"></div>
+        <div class="shape-2"></div>
+
+        <div class="hero-content">
+            <div class="hero-tag"><i class="fa-solid fa-sun-plant-wilt"></i> Welcome to Modern Farming</div>
+            <h1 class="hero-title">Cultivating a <span>Brighter Future</span> for Agriculture</h1>
+            <p class="hero-text">Empowering farmers with smart technology, comprehensive protection, and seamless access
+                to agricultural services. Secure your yield and grow with confidence.</p>
+            <div class="hero-actions">
+                <a href="#services" class="btn btn-solid"><i class="fa-solid fa-arrow-right"></i> Explore Services</a>
+                <a href="#departments" class="btn btn-outline">Contact Depts</a>
+            </div>
+        </div>
+
+        <div class="hero-image-wrapper">
+            <!-- Using unsplash image for a beautiful modern farm look -->
+            <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                alt="Smart Farming" class="main-hero-img">
+
+            <div class="img-card top">
+                <div class="img-card-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <div class="img-card-text">
+                    <h4>Crop Protection</h4>
+                    <p>100% Secure</p>
+                </div>
+            </div>
+
+            <div class="img-card bottom">
+                <div class="img-card-icon"><i class="fa-solid fa-chart-line"></i></div>
+                <div class="img-card-text">
+                    <h4>High Yield</h4>
+                    <p>Data-driven</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES / SERVICES SECTION -->
+    <section id="services" class="section">
+        <div class="section-header reveal">
+            <span class="section-subtitle">What We Offer</span>
+            <h2 class="section-title">Comprehensive Agricultural Services</h2>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card reveal" style="transition-delay: 0.1s;">
+                <div class="feature-icon"><i class="fa-solid fa-leaf"></i></div>
+                <h3 class="feature-title">Crop Production</h3>
+                <p class="feature-desc">Expert guidance and modern techniques to maximize your crop yield and quality
+                    throughout the season.</p>
+            </div>
+
+            <div class="feature-card reveal" style="transition-delay: 0.2s;">
+                <div class="feature-icon"><i class="fa-solid fa-shield-virus"></i></div>
+                <h3 class="feature-title">Crop Protection</h3>
+                <p class="feature-desc">Advanced disease prediction and pest management solutions to safeguard your
+                    valuable investment.</p>
+            </div>
+
+            <div class="feature-card reveal" style="transition-delay: 0.3s;">
+                <div class="feature-icon"><i class="fa-solid fa-brain"></i></div>
+                <h3 class="feature-title">Smart Farming</h3>
+                <p class="feature-desc">AI-powered crop recommendations, farming guides, and agricultural analytics for
+                    optimal resource usage.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA / ABOUT SECTION -->
+    <section id="about" class="reveal">
+        <div class="cta-section">
+            <div class="cta-pattern"></div>
+            <div class="cta-content">
+                <h2 class="cta-title">Ready to transform your farming experience?</h2>
+                <p class="cta-text">Join thousands of farmers who are already using Agrivision to modernize their
+                    agricultural practices, increase profits, and secure their livelihoods.</p>
+                <a href="ViewDistrict" class="btn btn-solid"
+                    style="background: var(--primary); color: white; border: none;">Get Started Today</a>
+            </div>
+            <div class="cta-image" style="width: 30%; position: relative; z-index: 10;">
+                <div
+                    style="width: 150px; height: 150px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto; border: 2px dashed rgba(255,255,255,0.3);">
+                    <i class="fa-brands fa-pagelines" style="font-size: 60px; color: var(--primary);"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DEPARTMENTS SECTION -->
+    <section id="departments" class="departments-bg section">
+        <div class="section-header reveal">
+            <span class="section-subtitle">Our Support Network</span>
+            <h2 class="section-title">Connect with Departments</h2>
+        </div>
+
+        <div class="dept-grid">
+            <div class="dept-card reveal" style="transition-delay: 0.1s;">
+                <div class="dept-icon"><i class="fa-solid fa-users-gear"></i></div>
+                <h3 class="dept-name">Agri Development</h3>
+                <span class="dept-detail">Dept of Agriculture & Farmers</span>
+                <p class="dept-person"><strong>Rep:</strong> Shri. P. Prasad</p>
+                <div class="dept-contact">
+                    <span><i class="fa-solid fa-phone"></i> 010-020-0120</span>
+                    <span><i class="fa-solid fa-envelope"></i> farmerswelfare@company.com</span>
+                </div>
+            </div>
+
+            <div class="dept-card reveal" style="transition-delay: 0.2s;">
+                <div class="dept-icon"><i class="fa-solid fa-earth-asia"></i></div>
+                <h3 class="dept-name">Kerala Agriculture</h3>
+                <span class="dept-detail">Agriculture Dept of Kerala</span>
+                <p class="dept-person"><strong>Rep:</strong> Shri. K. Mohanan</p>
+                <div class="dept-contact">
+                    <span><i class="fa-solid fa-phone"></i> 010-070-0170</span>
+                    <span><i class="fa-solid fa-envelope"></i> agriculturedpt@company.com</span>
+                </div>
+            </div>
+
+            <div class="dept-card reveal" style="transition-delay: 0.3s;">
+                <div class="dept-icon"><i class="fa-solid fa-cloud-sun"></i></div>
+                <h3 class="dept-name">Climate Resilient</h3>
+                <span class="dept-detail">Climate Resilient Dept</span>
+                <p class="dept-person"><strong>Rep:</strong> Shri. B. Sreekumar</p>
+                <div class="dept-contact">
+                    <span><i class="fa-solid fa-phone"></i> 010-040-0140</span>
+                    <span><i class="fa-solid fa-envelope"></i> climateresilient@company.com</span>
+                </div>
+            </div>
+
+            <div class="dept-card reveal" style="transition-delay: 0.3s;">
+                <div class="dept-icon"><i class="fa-solid fa-plate-wheat"></i></div>
+                <h3 class="dept-name">Agriculture Modernization </h3>
+                <span class="dept-detail">Agri-Modernization Dept</span>
+                <p class="dept-person"><strong>Rep:</strong> Shri. John Xavier</p>
+                <div class="dept-contact">
+                    <span><i class="fa-solid fa-phone"></i> 010-060-0160</span>
+                    <span><i class="fa-solid fa-envelope"></i> agrimodernization@company.com</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- MAP SECTION -->
+    <section class="map-container reveal">
+        <iframe src="https://www.google.com/maps/d/embed?mid=1CfFbwBRNL-egHDCPtPrntMgQBqk8dqs&ehbc=2E312F"
+            allowfullscreen loading="lazy"></iframe>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-top">
+            <div class="footer-col" style="flex: 2;">
+                <a href="#" class="footer-logo">
+                    <i class="fa-solid fa-seedling"></i> Agrivision
+                </a>
+                <p class="footer-desc">Empowering agriculture through technology. We provide comprehensive solutions for
+                    modern farming, crop protection, and sustained agricultural growth.</p>
+                <div class="social-links">
+                    <a href="#" class="social-btn"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social-btn"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#" class="social-btn"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="social-btn"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4 class="footer-title">Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#services">Our Services</a></li>
+                    <li><a href="#departments">Departments</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4 class="footer-title">Portals</h4>
+                <ul class="footer-links">
+                    <li><a href="Login">User Login</a></li>
+                    <li><a href="ViewDistrict">User Registration</a></li>
+                    <li><a href="Login">Admin Portal</a></li>
+                    <li><a href="Login">Branch Portal</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Agrivision. All rights reserved.</p>
+            <a href="#home" class="scroll-top">
+                <i class="fa-solid fa-arrow-up"></i>
+            </a>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        // Reveal elements on scroll
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        // Trigger once on load
+        reveal();
+
+        // Navbar scroll effect
+        window.addEventListener("scroll", function () {
+            var navbar = document.querySelector(".navbar");
+            if (window.scrollY > 50) {
+                navbar.style.padding = "15px 5%";
+                navbar.style.boxShadow = "0 4px 15px rgba(0,0,0,0.1)";
+            } else {
+                navbar.style.padding = "20px 5%";
+                navbar.style.boxShadow = "0 4px 6px -1px rgba(0, 0, 0, 0.05)";
+            }
+        });
+
+        // Mobile menu toggle
+        var mobileBtn = document.querySelector('.mobile-menu-btn');
+        if (mobileBtn) {
+            mobileBtn.addEventListener('click', function() {
+                var navbar = document.querySelector('.navbar');
+                navbar.classList.toggle('menu-active');
+            });
+        }
+    </script>
+</body>
+
+</html>

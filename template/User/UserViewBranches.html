@@ -1,0 +1,36 @@
+{% extends "base_user.html" %}
+
+{% block title %}View Branches{% endblock %}
+{% block page_title %}Agriculture Department Branches{% endblock %}
+
+{% block content %}
+<table>
+    <tr>
+        <th>Branch ID</th>
+        <th>Address</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Pincode</th>
+        <th style="width: 150px;">Action</th>
+    </tr>
+
+    {% for row in data %}
+    <tr>
+        <td>{{ row['branch_id'] }}</td>
+        <td>{{ row['address'] }}</td>
+        <td>{{ row['phone'] }}</td>
+        <td>{{ row['email'] }}</td>
+        <td>{{ row['pincode'] }}</td>
+        <td>
+            {% if row['branch_id']|string == current_branch_id|string %}
+            <span style="display: inline-block; padding: 5px 10px; background: rgba(164, 196, 34, 0.15); color: var(--primary); font-weight: 600; border-radius: 4px; border: 1px solid var(--primary); font-size: 13px;">
+                <i class="fa-solid fa-star"></i> My Branch
+            </span>
+            {% else %}
+            <a href="/ChangeBranch?id={{ row['branch_id'] }}" class="btn btn-outline" style="padding: 5px 10px; font-size: 13px;">Change Branch</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

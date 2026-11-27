@@ -1,0 +1,39 @@
+{% extends "base_branch.html" %}
+
+{% block title %}Add Crop{% endblock %}
+{% block page_title %}Register New Crop{% endblock %}
+
+{% block content %}
+<form id="form1" name="form1" method="post" action="register_crop">
+    <table>
+        <tr>
+            <th colspan="2">Crop Details</th>
+        </tr>
+        <tr>
+            <td style="width: 25%;">Crop Name</td>
+            <td>
+                <input type="text" name="TxtName" required placeholder="e.g. Wheat, Rice, Tomato..." />
+            </td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td>
+                <textarea name="TxtDesc" rows="4" required
+                    placeholder="Growing conditions, expected yield, special instructions..."></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>Available Quantity</td>
+            <td>
+                <input type="number" name="TxtQuantity" required placeholder="eg. 100" min="1" />
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <button type="submit" name="Submit" class="btn btn-solid">Save Crop Data</button>
+            </td>
+        </tr>
+    </table>
+</form>
+{% endblock %}

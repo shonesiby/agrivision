@@ -1,0 +1,131 @@
+{% extends "base_user.html" %}
+
+{% block title %}AI Disease Detection{% endblock %}
+{% block page_title %}AI - Plant Disease Detection{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto;">
+    <div style="margin-bottom: 30px; color: var(--text-light); text-align: center;">
+        <i class="fa-solid fa-plant-wilt"
+            style="font-size: 30px; color: var(--primary); margin-bottom: 15px; display: block;"></i>
+        <p>Upload a clear photograph of a crop leaf. Our advanced AI model will instantly analyze the image to
+            identify potential diseases, causes, and provide detailed treatment recommendations.</p>
+    </div>
+
+    <form method="POST" action="/detect_disease_gemini" enctype="multipart/form-data" style="text-align: center;">
+        <div
+            style="border: 2px dashed #E5E7EB; border-radius: 12px; padding: 40px; margin-bottom: 25px; background-color: #F9FAFB; transition: all 0.3s ease;">
+            <i class="fa-solid fa-cloud-arrow-up" id="upload-icon"
+                style="font-size: 30px; color: var(--primary); margin-bottom: 15px;"></i><br>
+
+            <!-- Image preview container -->
+            <div id="image-preview-container" style="display: none; margin-bottom: 20px;">
+                <img id="image-preview" src="#" alt="Image Preview"
+                    style="max-width: 100%; max-height: 250px; border-radius: 8px; border: 1px solid #E5E7EB; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+            </div>
+
+            <input type="file" name="leaf_image" id="leaf_image" accept="image/*" required
+                style="max-width: 100%; margin-top: 10px;">
+        </div>
+
+        <button type="submit" class="btn btn-solid" style="padding: 12px 40px; font-size: 16px; border-radius: 30px;">
+            <i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 8px;"></i> Analyze Disease
+        </button>
+    </form>
+
+    {% if error %}
+    <div
+        style="margin-top: 40px; padding: 20px; background: #FEF2F2; border: 1px solid #EF4444; border-radius: 8px; color: #B91C1C; text-align: center;">
+        <i class="fa-solid fa-triangle-exclamation" style="margin-right:8px;"></i> {{ error }}
+    </div>
+    {% elif result %}
+    <div
+        style="margin-top: 40px; padding: 30px; background: white; border: 1px solid #E5E7EB; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+        <h3
+            style="margin-bottom: 25px; color: var(--text-dark); font-size: 22px; text-align: center; border-bottom: 1px solid #E5E7EB; padding-bottom: 15px;">
+            Analysis Results</h3>
+
+        <div
+            style="display: flex; flex-direction: column; align-items: center; border-radius: 8px; margin-bottom: 25px;">
+            <img src="{{ image_url }}" alt="Uploaded Leaf"
+                style="max-width: 100%; max-height: 300px; border-radius: 8px; border: 1px solid #E5E7EB; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        </div>
+
+        <table style="width: 100%; text-align: left; border-collapse: collapse;">
+            <tr>
+                <td
+                    style="padding: 15px 10px; border-bottom: 1px solid #E5E7EB; width: 30%; color: var(--text-light); font-weight: 600;">
+                    Disease Name</td>
+                <td
+                    style="padding: 15px 10px; border-bottom: 1px solid #E5E7EB; color: #EF4444; font-weight: 700; font-size: 18px;">
+                    {{ result.disease_name }}</td>
+            </tr>
+            <tr>
+                <td
+                    style="padding: 15px 10px; border-bottom: 1px solid #E5E7EB; color: var(--text-light); font-weight: 600;">
+                    Confidence Level</td>
+                <td
+                    style="padding: 15px 10px; border-bottom: 1px solid #E5E7EB; color: var(--primary); font-weight: bold; font-size: 16px;">
+                    {{ result.confidence_level }}</td>
+            </tr>
+            <tr>
+                <td
+                    style="padding: 15px 10px; border-bottom: 1px solid #E5E7EB; color: var(--text-light); font-weight: 600;">
+                    Details</td>
+                <td
+                    style="padding: 15px 10px; border-bottom: 1px solid #E5E7EB; color: var(--text-dark); line-height: 1.6;">
+                    {{ result.details }}</td>
+            </tr>
+            <tr>
+                <td
+                    style="padding: 15px 10px; border-bottom: 1px solid #E5E7EB; color: var(--text-light); font-weight: 600;">
+                    Likely Reason</td>
+                <td
+                    style="padding: 15px 10px; border-bottom: 1px solid #E5E7EB; color: var(--text-dark); line-height: 1.6;">
+                    {{ result.reason }}</td>
+            </tr>
+            <tr>
+                <td
+                    style="padding: 15px 10px; border-bottom: 1px solid #E5E7EB; color: var(--text-light); font-weight: 600;">
+                    Preventions</td>
+                <td
+                    style="padding: 15px 10px; border-bottom: 1px solid #E5E7EB; color: var(--text-dark); line-height: 1.6;">
+                    {{ result.preventions }}</td>
+            </tr>
+            <tr>
+                <td
+                    style="padding: 15px 10px; border-bottom: 1px solid #E5E7EB; color: var(--text-light); font-weight: 600;">
+                    Treatments & Fertilizers</td>
+                <td
+                    style="padding: 15px 10px; border-bottom: 1px solid #E5E7EB; color: var(--primary); font-weight: 600; line-height: 1.6; background-color: rgba(16, 185, 129, 0.05); border-radius: 4px;">
+                    {{ result.medicines_or_fertilizers }}</td>
+            </tr>
+            {% if result.more_details %}
+            <tr>
+                <td style="padding: 15px 10px; color: var(--text-light); font-weight: 600;">Additional Info</td>
+                <td style="padding: 15px 10px; color: var(--text-dark); line-height: 1.6; font-size: 14px;">{{
+                    result.more_details }}</td>
+            </tr>
+            {% endif %}
+        </table>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <button class="btn btn-outline" onclick="window.print()" style="padding: 10px 20px;"><i
+                    class="fa-solid fa-print" style="margin-right: 8px;"></i> Print Report</button>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    document.getElementById('leaf_image').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const preview = document.getElementById('image-preview');
+            preview.src = URL.createObjectURL(file);
+            document.getElementById('image-preview-container').style.display = 'block';
+            document.getElementById('upload-icon').style.display = 'none';
+        }
+    });
+</script>
+{% endblock %}

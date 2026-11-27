@@ -1,0 +1,39 @@
+{% extends "base_user.html" %}
+
+{% block title %}Search Results{% endblock %}
+{% block page_title %}Branch Search Results{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 20px;">
+    {% if not data %}
+        <div style="background: rgba(16, 185, 129, 0.1); border-left: 4px solid var(--primary); padding: 15px 20px; border-radius: 4px; color: var(--text-dark);">
+            <i class="fa-solid fa-info-circle" style="color: var(--primary); margin-right: 10px;"></i> No branches matched your search criteria. <a href="search_branch_link" style="color: var(--primary); text-decoration: underline; font-weight: 600;">Try another search</a>.
+        </div>
+    {% endif %}
+</div>
+
+{% if data %}
+<table>
+    <tr>
+        <th>Branch Name</th>
+        <th>Address</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Pincode</th>
+    </tr>
+    {% for row in data %}
+    <tr>
+        <td>{{ row['branch_id'] }}</td>
+        <td>{{ row['address'] }}</td>
+        <td>{{ row['phone'] }}</td>
+        <td>{{ row['email'] }}</td>
+        <td>{{ row['pincode'] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<div style="text-align: center; margin-top: 30px;">
+    <a href="search_branch_link" class="btn btn-outline"><i class="fa-solid fa-magnifying-glass"></i> New Search</a>
+</div>
+{% endif %}
+{% endblock %}

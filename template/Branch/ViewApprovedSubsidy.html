@@ -1,0 +1,25 @@
+{% extends "base_branch.html" %}
+
+{% block title %}Approved Subsidies{% endblock %}
+{% block page_title %}Approved Subsidy Applications{% endblock %}
+
+{% block content %}
+<table>
+    <tr>
+        <th>User ID</th>
+        <th>Request Date</th>
+        <th>Description</th>
+        <th style="width: 150px;">Status</th>
+    </tr>
+    {% for row in data %}
+    <tr>
+        <td>{{ row['user_id'] }}</td>
+        <td>{{ row['request_date'] }}</td>
+        <td>{{ row['description'] }}</td>
+        <td>
+            <span style="color: var(--primary); font-weight: 600;"><i class="fa-solid fa-check-circle"></i> {{ row['status'] }}</span>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

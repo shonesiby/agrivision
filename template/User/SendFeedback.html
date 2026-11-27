@@ -1,0 +1,21 @@
+{% extends "base_user.html" %}
+
+{% block title %}Send Feedback{% endblock %}
+{% block page_title %}Share Your Feedback{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto; text-align: center;">
+    <div style="margin-bottom: 30px; color: var(--text-light);">
+        <i class="fa-solid fa-comments" style="font-size: 30px; color: var(--primary); margin-bottom: 15px; display: block;"></i>
+        <p>We value your opinion! Please share your feedback on our services, branch staff, or agricultural programs to help us improve.</p>
+    </div>
+
+    <form name="form1" method="post" action="SendFeedback">
+        <div style="margin-bottom: 25px;">
+            <textarea name="TxtFeedback" required rows="5" placeholder="Share your experience or suggestions..." style="width: 100%; padding: 15px 20px; font-size: 15px; border: 2px solid #E5E7EB; border-radius: 12px; outline: none; transition: border-color 0.3s ease; resize: vertical;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='#E5E7EB'"></textarea>
+        </div>
+        
+        <button type="submit" name="Submit" class="btn btn-solid" style="padding: 12px 40px; font-size: 16px; border-radius: 30px;"><i class="fa-solid fa-paper-plane"></i> Submit Feedback</button>
+    </form>
+</div>
+{% endblock %}

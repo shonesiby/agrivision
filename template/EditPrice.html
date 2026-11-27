@@ -1,0 +1,59 @@
+{% extends "base_admin.html" %}
+{% block title %}Edit Market Price{% endblock %}
+
+{% block hero %}
+<section class="hero" style="padding: 100px 5% 40px; background: linear-gradient(135deg, rgba(236, 253, 245, 0.5) 0%, rgba(255, 255, 255, 0.9) 100%); position: relative;">
+    <div style="margin-bottom: 20px;">
+        <a href="AdminManagePrices" style="color: var(--primary); font-weight: 600; font-size: 15px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-arrow-left-long"></i> Back to Prices
+        </a>
+    </div>
+    <div style="text-align: center; width: 100%;">
+        <h1 style="font-size: 36px; font-weight: 900; color: var(--text-dark); letter-spacing: -0.5px;">Edit Market Price</h1>
+        <p style="color: var(--text-light); font-size: 16px; margin-top: 10px; font-weight: 500;">Update the fair market price details.</p>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<style>
+    .page-header { display: none !important; }
+</style>
+<div style="max-width: 500px; margin: 20px auto; background: white; border-radius: 12px; padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.03);">
+    <h3 style="font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 25px;"><i class="fa-solid fa-pen" style="color: var(--primary); margin-right: 8px;"></i> Edit Price Details</h3>
+    <form action="/EditPrice" method="POST">
+        <input type="hidden" name="id" value="{{ data.id }}">
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; font-size: 14px; font-weight: 600; color: var(--text-dark); margin-bottom: 8px;">Category</label>
+            <select name="category" required style="width: 100%; padding: 12px 15px; border-radius: 8px; border: 1px solid #e5e7eb; font-size: 15px; outline: none;">
+                <option value="Crop" {% if data.category == 'Crop' %}selected{% endif %}>Crop</option>
+                <option value="Fertilizer" {% if data.category == 'Fertilizer' %}selected{% endif %}>Fertilizer</option>
+            </select>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; font-size: 14px; font-weight: 600; color: var(--text-dark); margin-bottom: 8px;">Item Name</label>
+            <input type="text" name="item_name" value="{{ data.item_name }}" required style="width: 100%; padding: 12px 15px; border-radius: 8px; border: 1px solid #e5e7eb; font-size: 15px; box-sizing: border-box; outline: none;">
+        </div>
+        
+        <div style="display: flex; gap: 15px; margin-bottom: 30px;">
+            <div style="flex: 1;">
+                <label style="display: block; font-size: 14px; font-weight: 600; color: var(--text-dark); margin-bottom: 8px;">Price (&#8377;)</label>
+                <input type="number" step="0.01" name="price" value="{{ data.price }}" required style="width: 100%; padding: 12px 15px; border-radius: 8px; border: 1px solid #e5e7eb; font-size: 15px; box-sizing: border-box; outline: none;">
+            </div>
+            <div style="flex: 1;">
+                <label style="display: block; font-size: 14px; font-weight: 600; color: var(--text-dark); margin-bottom: 8px;">Unit</label>
+                <select name="unit" required style="width: 100%; padding: 12px 15px; border-radius: 8px; border: 1px solid #e5e7eb; font-size: 15px; outline: none;">
+                    <option value="per kg" {% if data.unit == 'per kg' %}selected{% endif %}>per kg</option>
+                    <option value="per Bag" {% if data.unit == 'per Bag' %}selected{% endif %}>per Bag (50kg)</option>
+                    <option value="per Ton" {% if data.unit == 'per Ton' %}selected{% endif %}>per Ton</option>
+                    <option value="per Litre" {% if data.unit == 'per Litre' %}selected{% endif %}>per Litre</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-solid" style="width: 100%; padding: 14px;"><i class="fa-solid fa-save" style="margin-right: 8px;"></i> Save Changes</button>
+    </form>
+</div>
+{% endblock %}

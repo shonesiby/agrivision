@@ -1,0 +1,39 @@
+{% extends "base_branch.html" %}
+
+{% block title %}Approved Crop Bookings{% endblock %}
+{% block page_title %}Approved Crop Booking List{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 20px;">
+    {% if not data %}
+        <div style="background: rgba(16, 185, 129, 0.1); border-left: 4px solid var(--primary); padding: 15px 20px; border-radius: 4px; color: var(--text-dark);">
+            <i class="fa-solid fa-info-circle" style="color: var(--primary); margin-right: 10px;"></i> There are currently no approved crop bookings to display.
+        </div>
+    {% endif %}
+</div>
+
+{% if data %}
+<table>
+    <tr>
+        <th>Farmer Name</th>
+        <th>Requested Crop</th>
+        <th>Approved Quantity</th>
+        <th>Booking Date</th>
+        <th>Status</th>
+    </tr>
+    {% for row in data %}
+    <tr>
+        <td>{{ row['user_name'] }}</td>
+        <td>{{ row['name'] }}</td>
+        <td><span style="color: var(--primary); font-weight: bold;">{{ row['quantity'] }}</span></td>
+        <td>{{ row['book_date'] }}</td>
+        <td>
+            <span class="badge" style="background-color: rgba(16, 185, 129, 0.1); color: var(--primary); padding: 5px 12px; border-radius: 20px; font-weight: 600; font-size: 13px;">
+                <i class="fa-solid fa-check-circle" style="margin-right: 5px;"></i> {{ row['status'] }}
+            </span>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+{% endblock %}

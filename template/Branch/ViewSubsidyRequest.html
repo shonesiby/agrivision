@@ -1,0 +1,62 @@
+{% extends "base_branch.html" %}
+
+{% block title %}View Subsidy Requests{% endblock %}
+{% block page_title %}Farmer Subsidy Applications{% endblock %}
+
+{% block content %}
+<style>
+    .btn-reject:hover {
+        background-color: var(--danger, #ef4444) !important;
+        color: white !important;
+    }
+</style>
+<div style="margin-bottom: 20px;">
+    {% if not data %}
+        <div style="background: rgba(245, 158, 11, 0.1); border-left: 4px solid var(--secondary); padding: 15px 20px; border-radius: 4px; color: var(--text-dark);">
+            <i class="fa-solid fa-info-circle" style="color: var(--secondary); margin-right: 10px;"></i> There are no pending subsidy applications for this program at the moment.
+        </div>
+    {% endif %}
+</div>
+
+{% if data %}
+<table>
+    <tr>
+        <th>User ID</th>
+        <th>Request Date</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th style="width: 200px;">Actions</th>
+    </tr>
+    {% for row in data %}
+    <tr>
+        <td>{{ row['user_id'] }}</td>
+        <td>{{ row['request_date'] }}</td>
+        <td>{{ row['description'] }}</td>
+        <td>
+            {% if row['status'] == 'Approved' or row['status'] == 'approved' %}
+                <span class="badge" style="background-color: rgba(16, 185, 129, 0.1); color: var(--primary); padding: 5px 12px; border-radius: 20px; font-weight: 600; font-size: 13px;">
+                    <i class="fa-solid fa-check-circle" style="margin-right: 5px;"></i> {{ row['status']|title }}
+                </span>
+            {% elif row['status'] == 'Rejected' or row['status'] == 'rejected' %}
+                <span class="badge" style="background-color: rgba(239, 68, 68, 0.1); color: var(--danger, #ef4444); padding: 5px 12px; border-radius: 20px; font-weight: 600; font-size: 13px;">
+                    <i class="fa-solid fa-times-circle" style="margin-right: 5px;"></i> {{ row['status']|title }}
+                </span>
+            {% else %}
+                <span class="badge" style="background-color: rgba(245, 158, 11, 0.1); color: var(--secondary); padding: 5px 12px; border-radius: 20px; font-weight: 600; font-size: 13px;">
+                    <i class="fa-solid fa-clock" style="margin-right: 5px;"></i> {{ row['status']|title }}
+                </span>
+            {% endif %}
+        </td>
+        <td style="display: flex; flex-direction: column; gap: 8px;">
+            {% if row['status'] == 'Pending' or row['status'] == 'requested' %}
+                <a href="/ApproveRequest?id={{ row['idrequest_subsidy'] }}" class="btn btn-solid" style="padding: 6px 12px; font-size: 13px; text-align: center; box-sizing: border-box; width: 100%;">Approve</a>
+                <a href="/RejectRequest?id={{ row['idrequest_subsidy'] }}" class="btn btn-outline btn-reject" style="padding: 6px 12px; font-size: 13px; text-align: center; color: var(--danger, #ef4444); border-color: var(--danger, #ef4444); box-sizing: border-box; width: 100%;">Reject</a>
+            {% else %}
+                <span class="badge" style="background-color: var(--gray-light, #f3f4f6); color: var(--text-light); text-align: center; border-radius: 20px; font-style: italic; padding: 4px 10px; font-size: 12px; width: 100%; box-sizing: border-box;">Processed</span>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+{% endblock %}

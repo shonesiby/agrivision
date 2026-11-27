@@ -1,0 +1,291 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block hero %}
+<section class="hero"
+    style="min-height: 40vh; padding: 120px 5% 50px; background: linear-gradient(135deg, rgba(236, 253, 245, 0.8) 0%, rgba(255, 255, 255, 0.9) 100%); position: relative; overflow: hidden; border-bottom: 1px solid rgba(0,0,0,0.05);">
+    <div class="shape-1"
+        style="position: absolute; top: -50px; right: -50px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(16,185,129,0.1) 0%, rgba(255,255,255,0) 70%); border-radius: 50%;">
+    </div>
+    <div class="shape-2"
+        style="position: absolute; bottom: -50px; left: -50px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(245,158,11,0.1) 0%, rgba(255,255,255,0) 70%); border-radius: 50%;">
+    </div>
+
+    <div class="hero-content"
+        style="width: 100%; text-align: center; position: relative; z-index: 2; animation: fadeIn 0.8s ease;">
+        <div class="hero-tag"
+            style="display: inline-block; padding: 6px 16px; background: rgba(16, 185, 129, 0.1); color: var(--primary); border-radius: 20px; font-weight: 600; font-size: 14px; margin-bottom: 20px;">
+            <i class="fa-solid fa-shield-halved"></i> Administrator Dashboard
+        </div>
+        <h1 class="hero-title"
+            style="font-size: 42px; font-weight: 800; color: var(--text-dark); margin: 0 0 20px; letter-spacing: -1px;">
+            Welcome to the <span style="color: var(--primary);">System Console</span></h1>
+        <p class="hero-text"
+            style="margin: 0 auto; max-width: 600px; font-size: 18px; color: var(--text-light); line-height: 1.6; margin-bottom: 30px;">
+            Manage branches, fertilizers, subsidies, diseases, and user feedback from this centralized control panel.
+        </p>
+
+        <!-- Weather Widget -->
+        <div id="weather-widget"
+            style="margin: 0 auto; max-width: 800px; background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(12px); border-radius: 16px; padding: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.05); border: 1px solid rgba(255, 255, 255, 0.6); display: flex; flex-wrap: wrap; justify-content: space-around; align-items: center; text-align: center; gap: 15px; min-height: 100px; animation: fadeIn 1s ease;">
+            <div style="width: 100%; font-size: 15px; color: var(--primary); margin-bottom: 5px; font-weight: 500;"
+                id="weather-status">
+                <i class="fa-solid fa-spinner fa-spin"></i> Fetching your local weather...
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const weatherContainer = document.getElementById('weather-widget');
+
+                function fetchWeatherData(lat, lon, locationName = "Your Location") {
+                    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,precipitation,uv_index,visibility&timezone=auto`)
+                        .then(res => res.json())
+                        .then(data => {
+                            const current = data.current;
+                            const temp = current.temperature_2m !== undefined ? current.temperature_2m : '--';
+                            const humidity = current.relative_humidity_2m !== undefined ? current.relative_humidity_2m : '--';
+                            const wind = current.wind_speed_10m !== undefined ? current.wind_speed_10m : '--';
+                            const rain = current.precipitation !== undefined ? current.precipitation : '0';
+                            const uv = current.uv_index !== undefined ? current.uv_index : '0';
+                            const vis = current.visibility !== undefined ? (current.visibility / 1000).toFixed(1) : '--';
+
+                            weatherContainer.innerHTML = `
+                            <div style="width: 100%; font-size: 16px; color: var(--text-dark); font-weight: 700; margin-bottom: 15px;">
+                                <i class="fa-solid fa-location-dot" style="color: var(--primary);"></i> ${locationName}
+                            </div>
+                            <div style="display: flex; flex-direction: column; align-items: center; padding: 5px 10px;">
+                                <i class="fa-solid fa-temperature-half" style="font-size: 24px; color: #ef4444; margin-bottom: 8px;"></i>
+                                <span style="font-size: 18px; font-weight: 700; color: var(--text-dark);">${temp}°C</span>
+                                <span style="font-size: 12px; color: var(--text-light); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Temp</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; align-items: center; padding: 5px 10px;">
+                                <i class="fa-solid fa-droplet" style="font-size: 24px; color: #3b82f6; margin-bottom: 8px;"></i>
+                                <span style="font-size: 18px; font-weight: 700; color: var(--text-dark);">${humidity}%</span>
+                                <span style="font-size: 12px; color: var(--text-light); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Humidity</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; align-items: center; padding: 5px 10px;">
+                                <i class="fa-solid fa-wind" style="font-size: 24px; color: #64748b; margin-bottom: 8px;"></i>
+                                <span style="font-size: 18px; font-weight: 700; color: var(--text-dark);">${wind} <span style="font-size: 12px; font-weight: 500;">km/h</span></span>
+                                <span style="font-size: 12px; color: var(--text-light); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Wind</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; align-items: center; padding: 5px 10px;">
+                                <i class="fa-solid fa-cloud-rain" style="font-size: 24px; color: #0ea5e9; margin-bottom: 8px;"></i>
+                                <span style="font-size: 18px; font-weight: 700; color: var(--text-dark);">${rain} <span style="font-size: 12px; font-weight: 500;">mm</span></span>
+                                <span style="font-size: 12px; color: var(--text-light); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Rainfall</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; align-items: center; padding: 5px 10px;">
+                                <i class="fa-solid fa-sun" style="font-size: 24px; color: #eab308; margin-bottom: 8px;"></i>
+                                <span style="font-size: 18px; font-weight: 700; color: var(--text-dark);">${uv}</span>
+                                <span style="font-size: 12px; color: var(--text-light); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">UV Index</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; align-items: center; padding: 5px 10px;">
+                                <i class="fa-regular fa-eye" style="font-size: 24px; color: #8b5cf6; margin-bottom: 8px;"></i>
+                                <span style="font-size: 18px; font-weight: 700; color: var(--text-dark);">${vis} <span style="font-size: 12px; font-weight: 500;">km</span></span>
+                                <span style="font-size: 12px; color: var(--text-light); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Visibility</span>
+                            </div>
+                        `;
+                        })
+                        .catch(err => {
+                            weatherContainer.innerHTML = '<div style="width: 100%; font-size: 14px; color: #ef4444;"><i class="fa-solid fa-circle-exclamation"></i> Unable to load weather data.</div>';
+                        });
+                }
+
+                // Best approach: Use IP-based geolocation for fast, prompt-less city detection.
+                fetch('https://get.geojs.io/v1/ip/geo.json')
+                    .then(res => res.json())
+                    .then(data => {
+                        let lat = data.latitude;
+                        let lon = data.longitude;
+                        let city = data.city || data.region || "Your Location";
+                        fetchWeatherData(lat, lon, city);
+                    })
+                    .catch(err => {
+                        // Fallback to HTML5 Geolocation if IP fetch fails
+                        if ("geolocation" in navigator) {
+                            navigator.geolocation.getCurrentPosition(
+                                function (position) {
+                                    fetchWeatherData(position.coords.latitude, position.coords.longitude, "Your Locality");
+                                },
+                                function (error) {
+                                    fetchWeatherData(28.6139, 77.2090, "New Delhi (Default)");
+                                }
+                            );
+                        } else {
+                            fetchWeatherData(28.6139, 77.2090, "New Delhi (Default)");
+                        }
+                    });
+            });
+        </script>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="features-grid"
+    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: -20px;">
+
+    <div class="feature-card"
+        style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid rgba(0,0,0,0.03);">
+        <div class="feature-icon"
+            style="width: 60px; height: 60px; background: rgba(16, 185, 129, 0.1); color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 20px;">
+            <i class="fa-solid fa-code-branch"></i>
+        </div>
+        <h3 class="feature-title"
+            style="font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 12px;">Branch Management
+        </h3>
+        <p class="feature-desc"
+            style="color: var(--text-light); font-size: 14px; line-height: 1.6; margin-bottom: 25px;">Register new
+            agricultural branches by district and manage existing regional offices.</p>
+        <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+            <a href="LinkSelectBranch" class="btn btn-solid"
+                style="width: 100%; box-sizing: border-box; text-align: center;"><i class="fa-solid fa-plus"
+                    style="margin-right: 8px;"></i> Add Branch</a>
+            <a href="ViewDepartment" class="btn btn-outline"
+                style="width: 100%; box-sizing: border-box; text-align: center;"><i class="fa-solid fa-list"
+                    style="margin-right: 8px;"></i> View Branches</a>
+        </div>
+    </div>
+
+    <div class="feature-card"
+        style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid rgba(0,0,0,0.03);">
+        <div class="feature-icon"
+            style="width: 60px; height: 60px; background: rgba(16, 185, 129, 0.1); color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 20px;">
+            <i class="fa-solid fa-hand-holding-dollar"></i>
+        </div>
+        <h3 class="feature-title"
+            style="font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 12px;">Subsidy Operations
+        </h3>
+        <p class="feature-desc"
+            style="color: var(--text-light); font-size: 14px; line-height: 1.6; margin-bottom: 25px;">Publish new
+            government agricultural subsidies and monitor registered programs.</p>
+        <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+            <a href="LinkAddSubsidy" class="btn btn-solid"
+                style="width: 100%; box-sizing: border-box; text-align: center;"><i class="fa-solid fa-plus"
+                    style="margin-right: 8px;"></i> Add Subsidy</a>
+            <a href="ViewSubsidy" class="btn btn-outline"
+                style="width: 100%; box-sizing: border-box; text-align: center;"><i class="fa-solid fa-list"
+                    style="margin-right: 8px;"></i> View Subsidies</a>
+        </div>
+    </div>
+
+    <div class="feature-card"
+        style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid rgba(0,0,0,0.03);">
+        <div class="feature-icon"
+            style="width: 60px; height: 60px; background: rgba(16, 185, 129, 0.1); color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 20px;">
+            <i class="fa-solid fa-vial"></i>
+        </div>
+        <h3 class="feature-title"
+            style="font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 12px;">Fertilizer Catalog
+        </h3>
+        <p class="feature-desc"
+            style="color: var(--text-light); font-size: 14px; line-height: 1.6; margin-bottom: 25px;">Add new fertilizer
+            details, including dosages and purposes, and review the catalog.</p>
+        <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+            <a href="fertilizer_register" class="btn btn-solid"
+                style="width: 100%; box-sizing: border-box; text-align: center;"><i class="fa-solid fa-plus"
+                    style="margin-right: 8px;"></i> Add Fertilizer</a>
+            <a href="view_fertilizer" class="btn btn-outline"
+                style="width: 100%; box-sizing: border-box; text-align: center;"><i class="fa-solid fa-list"
+                    style="margin-right: 8px;"></i> View Fertilizers</a>
+        </div>
+    </div>
+
+    <div class="feature-card"
+        style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid rgba(0,0,0,0.03);">
+        <div class="feature-icon"
+            style="width: 60px; height: 60px; background: rgba(16, 185, 129, 0.1); color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 20px;">
+            <i class="fa-solid fa-bullhorn"></i>
+        </div>
+        <h3 class="feature-title"
+            style="font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 12px;">Global Alerts
+        </h3>
+        <p class="feature-desc"
+            style="color: var(--text-light); font-size: 14px; line-height: 1.6; margin-bottom: 25px;">Broadcast
+            important weather, subsidy, or pest warnings to all users across the platform.</p>
+        <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+            <a href="AdminManageAlerts" class="btn btn-solid"
+                style="width: 100%; box-sizing: border-box; text-align: center;"><i class="fa-solid fa-paper-plane"
+                    style="margin-right: 8px;"></i> Broadcast Alerts</a>
+        </div>
+    </div>
+
+    <div class="feature-card"
+        style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid rgba(0,0,0,0.03);">
+        <div class="feature-icon"
+            style="width: 60px; height: 60px; background: rgba(16, 185, 129, 0.1); color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 20px;">
+            <i class="fa-solid fa-money-bill-trend-up"></i>
+        </div>
+        <h3 class="feature-title"
+            style="font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 12px;">Market Prices
+        </h3>
+        <p class="feature-desc"
+            style="color: var(--text-light); font-size: 14px; line-height: 1.6; margin-bottom: 25px;">Broadcast current
+            daily market prices for crops and fertilizers for branches and Farmers.</p>
+        <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+            <a href="AdminManagePrices" class="btn btn-solid"
+                style="width: 100%; box-sizing: border-box; text-align: center;"><i class="fa-solid fa-broadcast-tower"
+                    style="margin-right: 8px;"></i> Broadcast Prices</a>
+        </div>
+    </div>
+
+    <div class="feature-card"
+        style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid rgba(0,0,0,0.03);">
+        <div class="feature-icon"
+            style="width: 60px; height: 60px; background: rgba(16, 185, 129, 0.1); color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 20px;">
+            <i class="fa-solid fa-chart-pie"></i>
+        </div>
+        <h3 class="feature-title"
+            style="font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 12px;">Disease Analytics
+        </h3>
+        <p class="feature-desc"
+            style="color: var(--text-light); font-size: 14px; line-height: 1.6; margin-bottom: 25px;">Track and
+            visualize plant disease outbreak data from user AI-Disease predictions.</p>
+        <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+            <a href="AdminDiseaseAnalytics" class="btn btn-solid"
+                style="width: 100%; box-sizing: border-box; text-align: center;"><i
+                    class="fa-solid fa-magnifying-glass-chart" style="margin-right: 8px;"></i> View Analytics</a>
+        </div>
+    </div>
+
+    <div class="feature-card"
+        style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid rgba(0,0,0,0.03);">
+        <div class="feature-icon"
+            style="width: 60px; height: 60px; background: rgba(16, 185, 129, 0.1); color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 20px;">
+            <i class="fa-solid fa-comments"></i>
+        </div>
+        <h3 class="feature-title"
+            style="font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 12px;">Feedback & Support
+        </h3>
+        <p class="feature-desc"
+            style="color: var(--text-light); font-size: 14px; line-height: 1.6; margin-bottom: 25px;">Review and
+            formally respond to feedback, suggestions, or complaints submitted by users.</p>
+        <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+            <a href="ViewFeedback" class="btn btn-solid"
+                style="width: 100%; box-sizing: border-box; text-align: center;"><i class="fa-solid fa-reply"
+                    style="margin-right: 8px;"></i> Manage Feedback</a>
+        </div>
+    </div>
+
+    <div class="feature-card"
+        style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid rgba(0,0,0,0.03);">
+        <div class="feature-icon"
+            style="width: 60px; height: 60px; background: rgba(16, 185, 129, 0.1); color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 20px;">
+            <i class="fa-solid fa-file-pdf"></i>
+        </div>
+        <h3 class="feature-title"
+            style="font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 12px;">System Reports
+        </h3>
+        <p class="feature-desc"
+            style="color: var(--text-light); font-size: 14px; line-height: 1.6; margin-bottom: 25px;">Export PDF and
+            Excel reports for farming operations, subsidies, and branches.</p>
+        <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+            <a href="AdminReports" class="btn btn-solid"
+                style="width: 100%; box-sizing: border-box; text-align: center;"><i class="fa-solid fa-download"
+                    style="margin-right: 8px;"></i> Generate Reports</a>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

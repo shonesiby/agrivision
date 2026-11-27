@@ -1,0 +1,29 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Edit Subsidy{% endblock %}
+{% block page_title %}Edit Subsidy Program{% endblock %}
+
+{% block content %}
+<form id="form1" name="form1" method="post" action="/EditSubsidy">
+    <input type="hidden" name="id" value="{{ data['idsubsidy'] }}" />
+
+    <table>
+        <tr>
+            <th>Field</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td><textarea name="description" rows="5" required
+                    style="width: 100%; border: 1px solid #E5E7EB; border-radius: 8px; padding: 12px 15px; font-size: 15px; background-color: var(--white); color: var(--text-dark); transition: all 0.3s ease;">{{ data['description'] }}</textarea>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <button type="submit" name="Submit" class="btn btn-solid">Update Subsidy</button>
+            </td>
+        </tr>
+    </table>
+</form>
+{% endblock %}

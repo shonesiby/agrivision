@@ -1,0 +1,36 @@
+{% extends "base_public.html" %}
+
+{% block title %}Agrivision Login{% endblock %}
+{% block page_title %}Login to Your Account{% endblock %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 0 auto;">
+    <form id="form1" name="form1" method="post" action="/login1">
+        <table>
+            <tr>
+                <th colspan="2" style="text-align: center;">Secure Login</th>
+            </tr>
+            <tr>
+                <td style="padding-top: 25px;"><i class="fa-solid fa-user" style="color: var(--primary);"></i> Username</td>
+                <td style="padding-top: 25px;">
+                    <input type="text" name="un" id="uname" required placeholder="Enter your username" />
+                </td>
+            </tr>
+            <tr>
+                <td><i class="fa-solid fa-lock" style="color: var(--primary);"></i> Password</td>
+                <td>
+                    <input type="password" name="pass" id="passwd" required placeholder="Enter your password" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center; padding: 25px;">
+                    <button name="login" type="submit" id="login" class="btn btn-solid" style="width: 100%; font-size: 16px;">Login</button>
+                    <div style="margin-top: 15px; font-size: 14px; color: var(--text-light);">
+                        Don't have an account? <a href="ViewDistrict" style="color: var(--primary); font-weight: 600;">Sign up here</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+{% endblock %}

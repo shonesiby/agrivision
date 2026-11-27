@@ -1,0 +1,44 @@
+{% extends "base_user.html" %}
+
+{% block title %}View Queries{% endblock %}
+{% block page_title %}Your Submitted Questions{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 20px;">
+    {% if not data %}
+        <div style="background: rgba(16, 185, 129, 0.1); border-left: 4px solid var(--primary); padding: 15px 20px; border-radius: 4px; color: var(--text-dark);">
+            <i class="fa-solid fa-info-circle" style="color: var(--primary); margin-right: 10px;"></i> You have not submitted any queries yet. <a href="LinkSendQuery" style="color: var(--primary); text-decoration: underline; font-weight: 600;">Ask a question</a>.
+        </div>
+    {% endif %}
+</div>
+
+{% if data %}
+<table>
+    <tr>
+        <th style="width: 50%;">Your Query</th>
+        <th style="width: 50%;">Branch Response</th>
+    </tr>
+
+    {% for row in data %}
+    <tr>
+        <td style="vertical-align: top;">
+            <div style="font-weight: 600; color: var(--text-dark); margin-bottom: 5px;"><i class="fa-solid fa-circle-question" style="color: var(--secondary); margin-right: 8px;"></i> Question:</div>
+            {{ row['user_query'] }}
+        </td>
+        <td style="vertical-align: top; background-color: #F9FAFB;">
+            <div style="font-weight: 600; color: var(--primary); margin-bottom: 5px;"><i class="fa-solid fa-comment-dots" style="color: var(--primary); margin-right: 8px;"></i> Answer:</div>
+            {% if row['reply'] %}
+                {{ row['reply'] }}
+            {% else %}
+                <span style="color: var(--text-light); font-style: italic;">Awaiting response from branch...</span>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<div style="text-align: center; margin-top: 30px;">
+    <a href="LinkSendQuery" class="btn btn-outline"><i class="fa-solid fa-plus"></i> Ask Another Question</a>
+</div>
+{% endif %}
+{% endblock %}

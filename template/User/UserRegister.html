@@ -1,0 +1,51 @@
+{% extends "base_public.html" %}
+
+{% block title %}Sign Up - Complete Registration{% endblock %}
+{% block page_title %}Farmer Registration{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto;">
+    <form id="form1" name="form1" method="post" action="UserRegistration">
+        <table>
+            <tr>
+                <th colspan="2" style="text-align: center;">Profile Details</th>
+            </tr>
+            <tr>
+                <td style="width: 30%; padding-top: 20px;">Username</td>
+                <td style="padding-top: 20px;">
+                    <input type="text" name="TxtUserid" required placeholder="Choose a unique username" />
+                </td>
+            </tr>
+            <tr>
+                <td>Full Name</td>
+                <td>
+                    <input type="text" name="TxtName" pattern="[A-Za-z ]{1,32}" required placeholder="First and Last Name" title="Letters only" />
+                </td>
+            </tr>
+            <tr>
+                <td>Home Address</td>
+                <td>
+                    <textarea name="TxtAddress" rows="3" required placeholder="Complete residential address"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>Phone Number</td>
+                <td>
+                    <input type="text" name="TxtPhone" required pattern="[6-9]{1}[0-9]{9}" title="Valid 10-digit Indian mobile number starting with 6-9" placeholder="10-digit mobile number" />
+                </td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td>
+                    <input type="password" name="TxtPassword" required placeholder="Create a strong password" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center; padding: 25px;">
+                    <button type="submit" name="Submit" class="btn btn-solid" style="width: 100%; font-size: 16px;">Complete Registration</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+{% endblock %}

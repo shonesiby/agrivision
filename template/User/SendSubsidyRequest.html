@@ -1,0 +1,22 @@
+{% extends "base_user.html" %}
+
+{% block title %}Apply for Subsidy{% endblock %}
+{% block page_title %}Submit Subsidy Application{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto; text-align: center;">
+    <div style="margin-bottom: 30px; color: var(--text-light);">
+        <i class="fa-solid fa-file-invoice-dollar" style="font-size: 30px; color: var(--primary); margin-bottom: 15px; display: block;"></i>
+        <p>Apply for agricultural subsidies by providing a detailed description of your requirements, farm size, and intended use of funds.</p>
+    </div>
+
+    <form method="post" action="SendSubsidyRequest">
+        <div style="margin-bottom: 25px;">
+            <label style="display: block; text-align: left; font-weight: 600; margin-bottom: 8px; color: var(--text-dark);">Application Details</label>
+            <textarea name="TxtDesc" required rows="6" placeholder="Describe why you are applying for this subsidy..." style="width: 100%; padding: 15px 20px; font-size: 15px; border: 2px solid #E5E7EB; border-radius: 12px; outline: none; transition: border-color 0.3s ease; resize: vertical;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='#E5E7EB'"></textarea>
+        </div>
+        
+        <button type="submit" name="Submit" class="btn btn-solid" style="padding: 12px 40px; font-size: 16px; border-radius: 30px;"><i class="fa-solid fa-paper-plane"></i> Submit Application</button>
+    </form>
+</div>
+{% endblock %}

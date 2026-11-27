@@ -1,0 +1,65 @@
+{% extends "base_user.html" %}
+
+{% block title %}Book Crops{% endblock %}
+{% block page_title %}Order High-Quality Crops{% endblock %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 0 auto;">
+    <form method="post" action="/InsertCropBooking">
+        <table>
+            <tr>
+                <th colspan="2" style="text-align: center;">Select Your Crop</th>
+            </tr>
+            <tr>
+                <td style="width: 30%; padding-top: 25px;"><i class="fa-solid fa-carrot"
+                        style="color: var(--primary);"></i> Crop</td>
+                <td style="padding-top: 25px;">
+                    <select name="crop_id" id="cropSelect" required
+                        style="width: 100%; border: 1px solid #E5E7EB; border-radius: 8px; padding: 12px 15px; font-size: 15px; background-color: var(--white); color: var(--text-dark); transition: all 0.3s ease;">
+                        <option value="">-- Select Available Crop --</option>
+                        {% for crop in crops %}
+                        {% if crop['quantity']|int > 0 %}
+                        <option value="{{ crop['crop_id'] }}" data-desc="{{ crop['description'] }}" data-qty="{{ crop['quantity'] }}">
+                            {{ crop['name'] }}
+                        </option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr id="cropDetailsRow" style="display: none;">
+                <td colspan="2" style="padding: 15px 25px; border-top: 1px solid #f3f4f6; border-bottom: 1px solid #f3f4f6;">
+                    <div style="background-color: rgba(16, 185, 129, 0.05); padding: 15px; border-radius: 8px; border-left: 3px solid var(--primary);">
+                        <h4 style="margin: 0 0 10px 0; color: var(--text-dark); font-size: 15px;"><i class="fa-solid fa-circle-info" style="color: var(--primary); margin-right: 5px;"></i> Crop Details</h4>
+                        <p style="margin: 0 0 5px 0; color: var(--text-light); font-size: 14px; line-height: 1.5;"><strong style="color: var(--text-dark);">Description:</strong> <span id="detailDesc"></span></p>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2" style="text-align: center; padding: 25px;">
+                    <button type="submit" class="btn btn-solid" style="width: 100%; font-size: 16px;">Place
+                        Booking</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<script>
+    document.getElementById('cropSelect').addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        const detailsRow = document.getElementById('cropDetailsRow');
+        
+        if (this.value) {
+            const desc = selectedOption.getAttribute('data-desc');
+            
+            document.getElementById('detailDesc').textContent = desc || 'No description available.';
+            
+            detailsRow.style.display = 'table-row';
+        } else {
+            detailsRow.style.display = 'none';
+        }
+    });
+</script>
+{% endblock %}

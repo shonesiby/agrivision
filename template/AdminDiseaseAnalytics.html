@@ -1,0 +1,170 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Disease Analytics Dashboard{% endblock %}
+
+{% block hero %}
+<section class="hero"
+    style="padding: 100px 5% 40px; background: linear-gradient(135deg, rgba(236, 253, 245, 0.5) 0%, rgba(255, 255, 255, 0.9) 100%); position: relative;">
+    
+    <div style="position: absolute; top: 100px; left: 5%;">
+        <a href="Adminhome" style="color: var(--primary); font-weight: 600; font-size: 15px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-arrow-left-long"></i> Back to Dashboard
+        </a>
+    </div>
+
+    <div style="text-align: center; width: 100%;">
+        <h1 style="font-size: 36px; font-weight: 900; color: var(--text-dark); letter-spacing: -0.5px;">Disease Analytics</h1>
+        <p style="color: var(--text-light); font-size: 16px; margin-top: 10px; font-weight: 500;">Monitor crop diseases diagnosed by the AI across the platform.</p>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<style>
+    /* Hide the default base_admin.html page-header since we use a custom hero section */
+    .page-header { display: none !important; }
+</style>
+<div style="display: flex; flex-wrap: wrap; gap: 30px; margin-top: 10px;">
+
+    <!-- Stats Panel -->
+    <div style="flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 20px;">
+        <div
+            style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; border: 1px solid rgba(0,0,0,0.03);">
+            <div style="font-size: 48px; font-weight: 800; color: var(--primary);">{{ total_predictions }}</div>
+            <div
+                style="color: var(--text-light); font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px;">
+                Total Predictions Made</div>
+        </div>
+
+        <div
+            style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.03);">
+            <h3
+                style="font-size: 18px; font-weight: 700; color: var(--text-dark); margin-bottom: 20px; text-align: center;">
+                Top Identified Diseases</h3>
+
+            {% if dist_data %}
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                {% for item in dist_data %}
+                <li
+                    style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f3f4f6;">
+                    <span style="font-weight: 600; color: var(--text-dark);">
+                        <i class="fa-solid fa-virus" style="color: #ef4444; margin-right: 8px;"></i>
+                        {{ item.disease_name }}
+                    </span>
+                    <span
+                        style="background: rgba(16, 185, 129, 0.1); color: var(--primary); padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 14px;">{{
+                        item.count }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p style="text-align: center; color: var(--text-light);">No data available yet.</p>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <!-- Chart Panel -->
+    <div
+        style="flex: 2; min-width: 300px; background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.03);">
+        <h3 style="font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 20px;"><i
+                class="fa-solid fa-chart-simple"></i> Outbreak Distribution</h3>
+        <div style="position: relative; height: 400px; width: 100%;">
+            <canvas id="diseaseChart"></canvas>
+        </div>
+    </div>
+
+</div>
+
+<!-- Include Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const ctx = document.getElementById('diseaseChart').getContext('2d');
+
+        // Prepare data from Jinja loop
+        const labels = [];
+        const dataValues = [];
+        let labelName;
+
+        {% for item in dist_data %}
+        // Ensure no huge labels that break UI, clip if needed
+        labelName = "{{ item.disease_name }}".replace(/&amp;/g, '&').replace(/&#39;/g, "'").replace(/&quot;/g, '"');
+        if (labelName.length > 30) {
+            labelName = labelName.substring(0, 27) + '...';
+        }
+        labels.push(labelName);
+        dataValues.push({{ item.count }});
+        {% endfor %}
+
+    if (labels.length === 0) {
+        // Plot empty / placeholder
+        labels.push("No Data");
+        dataValues.push(1);
+    }
+
+    const colors = [
+        'rgba(16, 185, 129, 0.8)', // Primary Green
+        'rgba(245, 158, 11, 0.8)', // Secondary Amber
+        'rgba(59, 130, 246, 0.8)', // Blue
+        'rgba(239, 68, 68, 0.8)',  // Red
+        'rgba(168, 85, 247, 0.8)', // Purple
+        'rgba(236, 72, 153, 0.8)', // Pink
+        'rgba(14, 165, 233, 0.8)', // Light Blue
+        'rgba(20, 184, 166, 0.8)', // Teal
+    ];
+
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Number of Occurrences',
+                data: dataValues,
+                backgroundColor: colors,
+                borderColor: 'rgba(255, 255, 255, 1)',
+                borderWidth: 2,
+                hoverOffset: 10
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        font: {
+                            family: "'Poppins', sans-serif",
+                            size: 14
+                        },
+                        color: '#1F2937',
+                        padding: 20
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(31, 41, 55, 0.9)',
+                    titleFont: { size: 14, family: "'Poppins', sans-serif" },
+                    bodyFont: { size: 14, family: "'Poppins', sans-serif" },
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: function (context) {
+                            let label = context.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed !== null) {
+                                label += context.parsed + ' cases';
+                            }
+                            return label;
+                        }
+                    }
+                }
+            },
+            cutout: '65%'
+        }
+    });
+    });
+</script>
+{% endblock %}

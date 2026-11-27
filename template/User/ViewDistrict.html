@@ -1,0 +1,25 @@
+{% extends "base_public.html" %}
+
+{% block title %}Sign Up - Select District{% endblock %}
+{% block page_title %}Select Your District{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto;">
+    <p style="text-align: center; margin-bottom: 30px; color: var(--text-light);">To begin your registration, please select the district where your farm is located.</p>
+    
+    <table>
+        <tr>
+            <th>District Name</th>
+            <th style="width: 150px; text-align: center;">Action</th>
+        </tr>
+        {% for row in data %}
+        <tr>
+            <td>{{ row['name'] }}</td>
+            <td style="text-align: center;">
+                <a href="/ViewbranchUser?id={{ row['iddistrict'] }}" class="btn btn-outline" style="padding: 5px 15px; font-size: 13px;">Select</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

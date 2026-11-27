@@ -1,0 +1,31 @@
+{% extends "base_branch.html" %}
+
+{% block title %}View Branch Users{% endblock %}
+{% block page_title %}Local Enrolled Farmers{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 20px;">
+    {% if not data %}
+        <div style="background: rgba(16, 185, 129, 0.1); border-left: 4px solid var(--primary); padding: 15px 20px; border-radius: 4px; color: var(--text-dark);">
+            <i class="fa-solid fa-info-circle" style="color: var(--primary); margin-right: 10px;"></i> There are currently no farmers enrolled in this branch's jurisdiction.
+        </div>
+    {% endif %}
+</div>
+
+{% if data %}
+<table>
+    <tr>
+        <th>Farmer Name</th>
+        <th>Residential Address</th>
+        <th>Phone Number</th>
+    </tr>
+    {% for row in data %}
+    <tr>
+        <td><i class="fa-solid fa-user-check" style="color: var(--primary); margin-right: 8px;"></i> {{ row['name'] }}</td>
+        <td>{{ row['address'] }}</td>
+        <td>{{ row['phone'] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+{% endblock %}

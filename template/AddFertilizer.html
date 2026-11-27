@@ -1,0 +1,38 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Add Fertilizer{% endblock %}
+{% block page_title %}Register New Fertilizer{% endblock %}
+
+{% block content %}
+<form id="form1" name="form1" method="post" action="/fertilizer_insert">
+    <table>
+        <tr>
+            <th colspan="2">Fertilizer Details</th>
+        </tr>
+        <tr>
+            <td style="width: 25%;">Name</td>
+            <td>
+                <input type="text" name="TxtName" required placeholder="e.g. Nitrogen rich NPK..." />
+            </td>
+        </tr>
+        <tr>
+            <td>Dosage</td>
+            <td>
+                <textarea name="TxtDosage" rows="3" required placeholder="Recommended application quantity..."></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>Purpose of Fertilizer</td>
+            <td>
+                <textarea name="TxtPurpose" rows="3" required placeholder="Targeted crops and diseases..."></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <button type="submit" name="Submit" class="btn btn-solid">Save Fertilizer</button>
+            </td>
+        </tr>
+    </table>
+</form>
+{% endblock %}

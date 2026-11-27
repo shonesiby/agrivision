@@ -1,0 +1,26 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Add Subsidy{% endblock %}
+{% block page_title %}Create New Subsidy Program{% endblock %}
+
+{% block content %}
+<form id="form1" name="form1" method="post" action="AddSubsidy">
+    <table>
+        <tr>
+            <th colspan="2">Subsidy Details</th>
+        </tr>
+        <tr>
+            <td style="width: 25%;">Description</td>
+            <td>
+                <textarea name="TxtDesc" rows="4" required placeholder="Enter detailed description of the subsidy program..."></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <button type="submit" name="Submit" class="btn btn-solid">Publish Subsidy</button>
+            </td>
+        </tr>
+    </table>
+</form>
+{% endblock %}

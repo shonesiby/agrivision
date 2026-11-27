@@ -1,0 +1,45 @@
+{% extends "base_branch.html" %}
+
+{% block title %}Approved Farms{% endblock %}
+{% block page_title %}Successfully Registered Farms{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 20px;">
+    {% if not data %}
+        <div style="background: rgba(16, 185, 129, 0.1); border-left: 4px solid var(--primary); padding: 15px 20px; border-radius: 4px; color: var(--text-dark);">
+            <i class="fa-solid fa-info-circle" style="color: var(--primary); margin-right: 10px;"></i> There are currently no approved farm registrations to display.
+        </div>
+    {% endif %}
+</div>
+
+{% if data %}
+<table>
+    <tr>
+        <th>Farmer Name</th>
+        <th>Phone</th>
+        <th>Farm Address</th>
+        <th>Farm Details</th>
+        <th>Registered Date</th>
+        <th>Verification Document</th>
+        <th style="width: 150px;">Status</th>
+    </tr>
+    {% for row in data %}
+    <tr>
+        <td>{{ row['name'] }}</td>
+        <td>{{ row['phone'] }}</td>
+        <td>{{ row['farm_address'] }}</td>
+        <td>{{ row['farm_details'] }}</td>
+        <td>{{ row['date_of_register'] }}</td>
+        <td style="text-align: center;">
+            <a href="/download?id={{ row['farm_image'] }}" target="_blank" style="display: inline-block; padding: 5px; border: 1px solid #E5E7EB; border-radius: 8px;">
+                <img height="80" width="120" style="object-fit: cover; border-radius: 4px;" src="/static/{{ row['farm_image'] }}" alt="Farm Verification Document">
+            </a>
+        </td>
+        <td>
+            <span style="color: var(--primary); font-weight: 600;"><i class="fa-solid fa-check-circle"></i> {{ row['status'] }}</span>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+{% endblock %}

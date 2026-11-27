@@ -1,0 +1,349 @@
+{% extends "base_branch.html" %}
+
+{% block title %}Branch Dashboard{% endblock %}
+
+{% block hero %}
+<section class="hero"
+    style="min-height: 40vh; padding: 120px 5% 50px; background: linear-gradient(135deg, rgba(236, 253, 245, 0.8) 0%, rgba(255, 255, 255, 0.9) 100%); position: relative; overflow: hidden; border-bottom: 1px solid rgba(0,0,0,0.05);">
+    <div class="shape-1"
+        style="position: absolute; top: -50px; right: -50px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(16,185,129,0.1) 0%, rgba(255,255,255,0) 70%); border-radius: 50%;">
+    </div>
+    <div class="shape-2"
+        style="position: absolute; bottom: -50px; left: -50px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(245,158,11,0.1) 0%, rgba(255,255,255,0) 70%); border-radius: 50%;">
+    </div>
+
+    <div class="hero-content"
+        style="width: 100%; text-align: center; position: relative; z-index: 2; animation: fadeIn 0.8s ease;">
+        <div class="hero-tag"
+            style="display: inline-block; padding: 6px 16px; background: rgba(16, 185, 129, 0.1); color: var(--primary); border-radius: 20px; font-weight: 600; font-size: 14px; margin-bottom: 20px;">
+            <i class="fa-solid fa-building-wheat"></i> Local Branch Office
+        </div>
+        <h1 class="hero-title"
+            style="font-size: 42px; font-weight: 800; color: var(--text-dark); margin: 0 0 20px; letter-spacing: -1px;">
+            Welcome to the <span style="color: var(--primary);">Branch Portal</span></h1>
+        <p class="hero-text"
+            style="margin: 0 auto; max-width: 600px; font-size: 18px; color: var(--text-light); line-height: 1.6; margin-bottom: 30px;">
+            Manage local farmers, approve crop bookings, review subsidy requests, and respond to queries in your
+            district.</p>
+
+        <!-- Weather Widget -->
+        <div id="weather-widget"
+            style="margin: 0 auto; max-width: 800px; background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(12px); border-radius: 16px; padding: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.05); border: 1px solid rgba(255, 255, 255, 0.6); display: flex; flex-wrap: wrap; justify-content: space-around; align-items: center; text-align: center; gap: 15px; min-height: 100px; animation: fadeIn 1s ease;">
+            <div style="width: 100%; font-size: 15px; color: var(--primary); margin-bottom: 5px; font-weight: 500;"
+                id="weather-status">
+                <i class="fa-solid fa-spinner fa-spin"></i> Fetching your local weather...
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const weatherContainer = document.getElementById('weather-widget');
+
+                function fetchWeatherData(lat, lon, locationName = "Your Location") {
+                    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,precipitation,uv_index,visibility&timezone=auto`)
+                        .then(res => res.json())
+                        .then(data => {
+                            const current = data.current;
+                            const temp = current.temperature_2m !== undefined ? current.temperature_2m : '--';
+                            const humidity = current.relative_humidity_2m !== undefined ? current.relative_humidity_2m : '--';
+                            const wind = current.wind_speed_10m !== undefined ? current.wind_speed_10m : '--';
+                            const rain = current.precipitation !== undefined ? current.precipitation : '0';
+                            const uv = current.uv_index !== undefined ? current.uv_index : '0';
+                            const vis = current.visibility !== undefined ? (current.visibility / 1000).toFixed(1) : '--';
+
+                            weatherContainer.innerHTML = `
+                            <div style="width: 100%; font-size: 16px; color: var(--text-dark); font-weight: 700; margin-bottom: 15px;">
+                                <i class="fa-solid fa-location-dot" style="color: var(--primary);"></i> ${locationName}
+                            </div>
+                            <div style="display: flex; flex-direction: column; align-items: center; padding: 5px 10px;">
+                                <i class="fa-solid fa-temperature-half" style="font-size: 24px; color: #ef4444; margin-bottom: 8px;"></i>
+                                <span style="font-size: 18px; font-weight: 700; color: var(--text-dark);">${temp}°C</span>
+                                <span style="font-size: 12px; color: var(--text-light); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Temp</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; align-items: center; padding: 5px 10px;">
+                                <i class="fa-solid fa-droplet" style="font-size: 24px; color: #3b82f6; margin-bottom: 8px;"></i>
+                                <span style="font-size: 18px; font-weight: 700; color: var(--text-dark);">${humidity}%</span>
+                                <span style="font-size: 12px; color: var(--text-light); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Humidity</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; align-items: center; padding: 5px 10px;">
+                                <i class="fa-solid fa-wind" style="font-size: 24px; color: #64748b; margin-bottom: 8px;"></i>
+                                <span style="font-size: 18px; font-weight: 700; color: var(--text-dark);">${wind} <span style="font-size: 12px; font-weight: 500;">km/h</span></span>
+                                <span style="font-size: 12px; color: var(--text-light); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Wind</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; align-items: center; padding: 5px 10px;">
+                                <i class="fa-solid fa-cloud-rain" style="font-size: 24px; color: #0ea5e9; margin-bottom: 8px;"></i>
+                                <span style="font-size: 18px; font-weight: 700; color: var(--text-dark);">${rain} <span style="font-size: 12px; font-weight: 500;">mm</span></span>
+                                <span style="font-size: 12px; color: var(--text-light); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Rainfall</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; align-items: center; padding: 5px 10px;">
+                                <i class="fa-solid fa-sun" style="font-size: 24px; color: #eab308; margin-bottom: 8px;"></i>
+                                <span style="font-size: 18px; font-weight: 700; color: var(--text-dark);">${uv}</span>
+                                <span style="font-size: 12px; color: var(--text-light); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">UV Index</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; align-items: center; padding: 5px 10px;">
+                                <i class="fa-regular fa-eye" style="font-size: 24px; color: #8b5cf6; margin-bottom: 8px;"></i>
+                                <span style="font-size: 18px; font-weight: 700; color: var(--text-dark);">${vis} <span style="font-size: 12px; font-weight: 500;">km</span></span>
+                                <span style="font-size: 12px; color: var(--text-light); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Visibility</span>
+                            </div>
+                        `;
+                        })
+                        .catch(err => {
+                            weatherContainer.innerHTML = '<div style="width: 100%; font-size: 14px; color: #ef4444;"><i class="fa-solid fa-circle-exclamation"></i> Unable to load weather data.</div>';
+                        });
+                }
+
+                // Best approach: Use IP-based geolocation for fast, prompt-less city detection.
+                fetch('https://get.geojs.io/v1/ip/geo.json')
+                    .then(res => res.json())
+                    .then(data => {
+                        let lat = data.latitude;
+                        let lon = data.longitude;
+                        let city = data.city || data.region || "Your Location";
+                        fetchWeatherData(lat, lon, city);
+                    })
+                    .catch(err => {
+                        // Fallback to HTML5 Geolocation if IP fetch fails
+                        if ("geolocation" in navigator) {
+                            navigator.geolocation.getCurrentPosition(
+                                function (position) {
+                                    fetchWeatherData(position.coords.latitude, position.coords.longitude, "Your Locality");
+                                },
+                                function (error) {
+                                    fetchWeatherData(28.6139, 77.2090, "New Delhi (Default)");
+                                }
+                            );
+                        } else {
+                            fetchWeatherData(28.6139, 77.2090, "New Delhi (Default)");
+                        }
+                    });
+            });
+        </script>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+{% if alerts and alerts|length > 0 %}
+<div style="margin-top: -30px; margin-bottom: 40px; padding: 0 5%;">
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+        <i class="fa-solid fa-bullhorn" style="font-size: 20px; color: var(--primary);"></i>
+        <h3 style="font-size: 20px; font-weight: 700; color: var(--text-dark); margin: 0;">Global Announcements</h3>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 15px;">
+        {% for alert in alerts %}
+        <div
+            style="background: white; border-left: 4px solid {% if alert.type == 'Weather' %}#0ea5e9{% elif alert.type == 'Pest' or alert.type == 'Urgent' %}#ef4444{% elif alert.type == 'Subsidy' %}#f59e0b{% else %}var(--primary){% endif %}; border-radius: 12px; padding: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.06); display: flex; align-items: flex-start; gap: 15px; transition: transform 0.2s ease;">
+            <div
+                style="font-size: 24px; margin-top: 2px; color: {% if alert.type == 'Weather' %}#0ea5e9{% elif alert.type == 'Pest' or alert.type == 'Urgent' %}#ef4444{% elif alert.type == 'Subsidy' %}#f59e0b{% else %}var(--primary){% endif %};">
+                {% if alert.type == 'Weather' %}<i class="fa-solid fa-cloud-bolt"></i>{% elif alert.type == 'Pest' or
+                alert.type == 'Urgent' %}<i class="fa-solid fa-triangle-exclamation"></i>{% elif alert.type == 'Subsidy'
+                %}<i class="fa-solid fa-hand-holding-dollar"></i>{% else %}<i class="fa-solid fa-circle-info"></i>{%
+                endif %}
+            </div>
+            <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <h4 style="margin: 0; font-size: 16px; font-weight: 700; color: var(--text-dark);">{{ alert.title }}
+                    </h4>
+                    <span
+                        style="font-size: 12px; font-weight: 600; color: var(--text-light); background: #f3f4f6; padding: 3px 8px; border-radius: 12px;">{{
+                        alert.date }}</span>
+                </div>
+                <p style="margin: 0; font-size: 15px; color: var(--text-light); line-height: 1.5;">{{ alert.message }}
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+
+
+<div class="features-grid"
+    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: -20px;">
+
+    <div class="feature-card"
+        style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid rgba(0,0,0,0.03);">
+        <div class="feature-icon"
+            style="width: 60px; height: 60px; background: rgba(16, 185, 129, 0.1); color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 20px;">
+            <i class="fa-solid fa-wheat-awn"></i>
+        </div>
+        <h3 class="feature-title"
+            style="font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 12px;">Crop Management
+        </h3>
+        <p class="feature-desc"
+            style="color: var(--text-light); font-size: 14px; line-height: 1.6; margin-bottom: 25px;">Register new crops
+            available in your branch and manage the district's crop catalog.</p>
+        <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+            <a href="register_crop_link" class="btn btn-solid"
+                style="width: 100%; box-sizing: border-box; text-align: center;"><i class="fa-solid fa-plus"
+                    style="margin-right: 8px;"></i> Add Crop</a>
+            <a href="view_crop" class="btn btn-outline"
+                style="width: 100%; box-sizing: border-box; text-align: center;"><i class="fa-solid fa-list"
+                    style="margin-right: 8px;"></i> View Crops</a>
+        </div>
+    </div>
+
+    <div class="feature-card"
+        style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid rgba(0,0,0,0.03);">
+        <div class="feature-icon"
+            style="width: 60px; height: 60px; background: rgba(16, 185, 129, 0.1); color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 20px;">
+            <i class="fa-solid fa-basket-shopping"></i>
+        </div>
+        <h3 class="feature-title"
+            style="font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 12px;">Crop Bookings</h3>
+        <p class="feature-desc"
+            style="color: var(--text-light); font-size: 14px; line-height: 1.6; margin-bottom: 25px;">Review incoming
+            farmer requests for crop bookings and approve the bookings.</p>
+        <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+            <a href="BranchViewBooking" class="btn btn-solid"
+                style="width: 100%; box-sizing: border-box; text-align: center;"><i
+                    class="fa-solid fa-clock-rotate-left" style="margin-right: 8px;"></i> Pending Bookings</a>
+            <a href="BranchApprovedBooking" class="btn btn-outline"
+                style="width: 100%; box-sizing: border-box; text-align: center;"><i class="fa-solid fa-check-circle"
+                    style="margin-right: 8px;"></i> Approved Bookings</a>
+        </div>
+    </div>
+
+    <div class="feature-card"
+        style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid rgba(0,0,0,0.03);">
+        <div class="feature-icon"
+            style="width: 60px; height: 60px; background: rgba(16, 185, 129, 0.1); color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 20px;">
+            <i class="fa-solid fa-tractor"></i>
+        </div>
+        <h3 class="feature-title"
+            style="font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 12px;">Farm Approvals</h3>
+        <p class="feature-desc"
+            style="color: var(--text-light); font-size: 14px; line-height: 1.6; margin-bottom: 25px;">Verify identities
+            and approve new farm registrations within your assigned district.</p>
+        <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+            <a href="BranchViewFarms" class="btn btn-solid"
+                style="width: 100%; box-sizing: border-box; text-align: center;"><i class="fa-regular fa-hourglass-half"
+                    style="margin-right: 8px;"></i> Pending Farms</a>
+            <a href="BranchApprovedFarms" class="btn btn-outline"
+                style="width: 100%; box-sizing: border-box; text-align: center;"><i class="fa-solid fa-check-circle"
+                    style="margin-right: 8px;"></i> Approved Farms</a>
+        </div>
+    </div>
+
+    <div class="feature-card"
+        style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid rgba(0,0,0,0.03);">
+        <div class="feature-icon"
+            style="width: 60px; height: 60px; background: rgba(16, 185, 129, 0.1); color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 20px;">
+            <i class="fa-solid fa-file-invoice-dollar"></i>
+        </div>
+        <h3 class="feature-title"
+            style="font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 12px;">Subsidy Processing
+        </h3>
+        <p class="feature-desc"
+            style="color: var(--text-light); font-size: 14px; line-height: 1.6; margin-bottom: 25px;">Evaluate farmer
+            subsidy applications, verify their eligibility, and grant approvals.</p>
+        <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+            <a href="ViewSubsidyRequest" class="btn btn-solid"
+                style="width: 100%; box-sizing: border-box; text-align: center;"><i class="fa-regular fa-hourglass-half"
+                    style="margin-right: 8px;"></i> Subsidies Pending</a>
+            <a href="ApprovedSubsidy" class="btn btn-outline"
+                style="width: 100%; box-sizing: border-box; text-align: center;"><i class="fa-solid fa-check-circle"
+                    style="margin-right: 8px;"></i> Approved Subsidies</a>
+        </div>
+    </div>
+
+    <div class="feature-card"
+        style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid rgba(0,0,0,0.03);">
+        <div class="feature-icon"
+            style="width: 60px; height: 60px; background: rgba(16, 185, 129, 0.1); color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 20px;">
+            <i class="fa-solid fa-users"></i>
+        </div>
+        <h3 class="feature-title"
+            style="font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 12px;">User Directory</h3>
+        <p class="feature-desc"
+            style="color: var(--text-light); font-size: 14px; line-height: 1.6; margin-bottom: 25px;">View the directory
+            of registered farmers and users assigned to this branch.</p>
+        <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+            <a href="BranchViewUsers" class="btn btn-solid"
+                style="width: 100%; box-sizing: border-box; text-align: center;"><i class="fa-solid fa-list"
+                    style="margin-right: 8px;"></i> View Users</a>
+        </div>
+    </div>
+
+    <div class="feature-card"
+        style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid rgba(0,0,0,0.03);">
+        <div class="feature-icon"
+            style="width: 60px; height: 60px; background: rgba(16, 185, 129, 0.1); color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 20px;">
+            <i class="fa-solid fa-comments"></i>
+        </div>
+        <h3 class="feature-title"
+            style="font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 12px;">Farmer Queries</h3>
+        <p class="feature-desc"
+            style="color: var(--text-light); font-size: 14px; line-height: 1.6; margin-bottom: 25px;">Review and reply
+            to specific questions and inquiries submitted by local farmers.</p>
+        <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+            <a href="ViewQueries" class="btn btn-solid"
+                style="width: 100%; box-sizing: border-box; text-align: center;"><i class="fa-solid fa-reply"
+                    style="margin-right: 8px;"></i> View Queries</a>
+        </div>
+    </div>
+
+    <div class="feature-card"
+        style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid rgba(0,0,0,0.03);">
+        <div class="feature-icon"
+            style="width: 60px; height: 60px; background: rgba(16, 185, 129, 0.1); color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 20px;">
+            <i class="fa-solid fa-broadcast-tower"></i>
+        </div>
+        <h3 class="feature-title"
+            style="font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 12px;">Local
+            Advisories</h3>
+        <p class="feature-desc"
+            style="color: var(--text-light); font-size: 14px; line-height: 1.6; margin-bottom: 25px;">Broadcast
+            important local alerts and notices to farmers registered under your jurisdiction.</p>
+        <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+            <a href="BranchManageAlerts" class="btn btn-solid"
+                style="width: 100%; box-sizing: border-box; text-align: center;"><i class="fa-solid fa-satellite-dish"
+                    style="margin-right: 8px;"></i> Broadcast Alert</a>
+        </div>
+    </div>
+
+</div>
+
+<!-- Market Prices Ticker -->
+{% if market_prices and market_prices|length > 0 %}
+<div style="margin-top: 40px; margin-bottom: 40px; padding: 0 5%;">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="fa-solid fa-money-bill-trend-up" style="font-size: 20px; color: #10B981;"></i>
+            <h3 style="font-size: 20px; font-weight: 700; color: var(--text-dark); margin: 0;">Today's Market Prices
+                (Kerala)</h3>
+        </div>
+        <span
+            style="font-size: 12px; font-weight: 600; color: var(--text-light); background: #f3f4f6; padding: 4px 10px; border-radius: 20px;">Live
+            Updates</span>
+    </div>
+    <div
+        style="display: flex; gap: 15px; overflow-x: auto; padding-bottom: 15px; scrollbar-width: thin; scrollbar-color: #cbd5e1 transparent;">
+        {% for price in market_prices %}
+        <div
+            style="min-width: 220px; background: white; border-radius: 12px; padding: 15px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.03); flex-shrink: 0; transition: transform 0.2s ease;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <span style="font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.5px;
+                {% if price.category == 'Crop' %}background: rgba(16, 185, 129, 0.1); color: var(--primary);
+                {% else %}background: rgba(245, 158, 11, 0.1); color: #f59e0b;{% endif %}">
+                    {{ price.category }}
+                </span>
+                <span style="font-size: 11px; font-weight: 500; color: #9ca3af;"><i class="fa-regular fa-clock"
+                        style="margin-right: 3px;"></i>{{ price.date }}</span>
+            </div>
+            <h4 style="margin: 0 0 5px 0; font-size: 16px; font-weight: 700; color: var(--text-dark);">{{
+                price.item_name }}</h4>
+            <div style="display: flex; align-items: baseline; gap: 4px;">
+                <span style="font-size: 22px; font-weight: 800; color: var(--text-dark);">&#8377;{{ price.price
+                    }}</span>
+                <span style="font-size: 13px; font-weight: 500; color: var(--text-light);">{{ price.unit }}</span>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

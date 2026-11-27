@@ -1,0 +1,21 @@
+{% extends "base_user.html" %}
+
+{% block title %}Ask a Question{% endblock %}
+{% block page_title %}Submit a Query to Your Branch{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto; text-align: center;">
+    <div style="margin-bottom: 30px; color: var(--text-light);">
+        <i class="fa-solid fa-clipboard-question" style="font-size: 30px; color: var(--primary); margin-bottom: 15px; display: block;"></i>
+        <p>Do you have a question regarding farming techniques, subsidies, or branch services? Submit your query below, and experts from your local branch will respond.</p>
+    </div>
+
+    <form id="form1" name="form1" method="post" action="SendQuery">
+        <div style="margin-bottom: 25px;">
+            <textarea name="TxtQuery" required rows="5" placeholder="Type your detailed question here..." style="width: 100%; padding: 15px 20px; font-size: 15px; border: 2px solid #E5E7EB; border-radius: 12px; outline: none; transition: border-color 0.3s ease; resize: vertical;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='#E5E7EB'"></textarea>
+        </div>
+        
+        <button type="submit" name="Submit" class="btn btn-solid" style="padding: 12px 40px; font-size: 16px; border-radius: 30px;"><i class="fa-solid fa-paper-plane"></i> Submit Query</button>
+    </form>
+</div>
+{% endblock %}

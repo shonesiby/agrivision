@@ -1,0 +1,47 @@
+{% extends "base_admin.html" %}
+{% block title %}Edit Global Alert{% endblock %}
+
+{% block hero %}
+<section class="hero" style="padding: 100px 5% 40px; background: linear-gradient(135deg, rgba(236, 253, 245, 0.5) 0%, rgba(255, 255, 255, 0.9) 100%); position: relative;">
+    <div style="margin-bottom: 20px;">
+        <a href="AdminManageAlerts" style="color: var(--primary); font-weight: 600; font-size: 15px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-arrow-left-long"></i> Back to Alerts
+        </a>
+    </div>
+    <div style="text-align: center; width: 100%;">
+        <h1 style="font-size: 36px; font-weight: 900; color: var(--text-dark); letter-spacing: -0.5px;">Edit Alert</h1>
+        <p style="color: var(--text-light); font-size: 16px; margin-top: 10px; font-weight: 500;">Modify the details of an existing broadcast message.</p>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<style>
+    .page-header { display: none !important; }
+</style>
+<div style="max-width: 600px; margin: 20px auto; background: white; border-radius: 16px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.03);">
+    <h3 style="font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 25px;"><i class="fa-solid fa-pen" style="color: var(--primary); margin-right: 8px;"></i> Edit Alert Details</h3>
+    <form action="/EditAlert" method="POST">
+        <input type="hidden" name="id" value="{{ data.id }}">
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px; color: var(--text-dark);">Alert Title</label>
+            <input type="text" name="title" value="{{ data.title }}" required style="width: 100%; padding: 12px 15px; border-radius: 8px; border: 1px solid #e5e7eb; font-size: 15px; outline: none; box-sizing: border-box;">
+        </div>
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px; color: var(--text-dark);">Alert Type</label>
+            <select name="type" required style="width: 100%; padding: 12px 15px; border-radius: 8px; border: 1px solid #e5e7eb; font-size: 15px; outline: none;">
+                <option value="Info" {% if data.type == 'Info' %}selected{% endif %}>General Info</option>
+                <option value="Weather" {% if data.type == 'Weather' %}selected{% endif %}>Weather Alert</option>
+                <option value="Subsidy" {% if data.type == 'Subsidy' %}selected{% endif %}>New Subsidy</option>
+                <option value="Pest" {% if data.type == 'Pest' %}selected{% endif %}>Pest/Disease Warning</option>
+                <option value="Urgent" {% if data.type == 'Urgent' %}selected{% endif %}>Urgent</option>
+            </select>
+        </div>
+        <div style="margin-bottom: 30px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px; color: var(--text-dark);">Message Body</label>
+            <textarea name="message" rows="5" required style="width: 100%; padding: 12px 15px; border-radius: 8px; border: 1px solid #e5e7eb; font-size: 15px; outline: none; box-sizing: border-box; resize: vertical;">{{ data.message }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-solid" style="width: 100%; padding: 14px;"><i class="fa-solid fa-save" style="margin-right: 8px;"></i> Save Changes</button>
+    </form>
+</div>
+{% endblock %}

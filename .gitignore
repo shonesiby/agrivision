@@ -1,0 +1,22 @@
+# Environment & secrets
+.env
+.env.*
+!.env.example
+
+# Python virtual environments & caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE & OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# User-uploaded runtime images (keep folder structure only)
+static/uploads/*
+!static/uploads/.gitkeep

@@ -1,0 +1,22 @@
+{% extends "base_branch.html" %}
+
+{% block title %}Reply to Query{% endblock %}
+{% block page_title %}Provide Feedback to Farmer{% endblock %}
+
+{% block content %}
+<form name="form1" method="post" action="ReplyQuery">
+    <table>
+        <tr>
+            <th colspan="2">Provide Your Reply</th>
+        </tr>
+        <tr>
+            <td style="width: 20%;">Reply Message</td>
+            <td><textarea name="TxtReply" rows="4" required placeholder="Type your response..."></textarea></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="submit" class="btn btn-solid">Send Reply</button></td>
+        </tr>
+    </table>
+</form>
+{% endblock %}

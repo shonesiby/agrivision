@@ -1,0 +1,22 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Reply to Feedback{% endblock %}
+{% block page_title %}Reply to User Feedback{% endblock %}
+
+{% block content %}
+<form name="form1" method="post" action="FeedbackReply">
+    <table>
+        <tr>
+            <th colspan="2">Provide Your Reply</th>
+        </tr>
+        <tr>
+            <td style="width: 20%;">Reply Message</td>
+            <td><textarea name="TxtReply" rows="4" required></textarea></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="submit" class="btn btn-solid">Submit Reply</button></td>
+        </tr>
+    </table>
+</form>
+{% endblock %}

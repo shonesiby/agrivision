@@ -1,0 +1,78 @@
+{% extends "base_branch.html" %}
+
+{% block title %}View Crop Bookings{% endblock %}
+{% block page_title %}Farmer Crop Booking Requests{% endblock %}
+
+{% block content %}
+<style>
+    .btn-reject:hover {
+        background-color: var(--danger, #ef4444) !important;
+        color: white !important;
+    }
+</style>
+<div style="margin-bottom: 20px;">
+    {% if not data %}
+    <div
+        style="background: rgba(16, 185, 129, 0.1); border-left: 4px solid var(--primary); padding: 15px 20px; border-radius: 4px; color: var(--text-dark);">
+        <i class="fa-solid fa-info-circle" style="color: var(--primary); margin-right: 10px;"></i> No pending crop
+        booking requests at this time.
+    </div>
+    {% endif %}
+</div>
+
+{% if data %}
+<table>
+    <tr>
+        <th>Farmer Name</th>
+        <th>Requested Crop</th>
+        <th>Balance Qty</th>
+        <th>Booking Date</th>
+        <th>Status</th>
+        <th style="width: 250px;">Action</th>
+    </tr>
+    {% for row in data %}
+    <tr>
+        <td>{{ row['user_name'] }}</td>
+        <td>{{ row['name'] }}</td>
+        <td><span style="color: var(--primary); font-weight: bold;">{{ row['balance_qty'] }}</span></td>
+        <td>{{ row['book_date'] }}</td>
+        <td>
+            {% if row['status'] == 'Approved' %}
+            <span class="badge"
+                style="background-color: rgba(16, 185, 129, 0.1); color: var(--primary); padding: 5px 12px; border-radius: 20px; font-weight: 600; font-size: 13px;">
+                <i class="fa-solid fa-check-circle" style="margin-right: 5px;"></i> {{ row['status'] }}
+            </span>
+            {% elif row['status'] == 'Rejected' %}
+            <span class="badge"
+                style="background-color: rgba(239, 68, 68, 0.1); color: var(--danger, #ef4444); padding: 5px 12px; border-radius: 20px; font-weight: 600; font-size: 13px;">
+                <i class="fa-solid fa-times-circle" style="margin-right: 5px;"></i> {{ row['status'] }}
+            </span>
+            {% else %}
+            <span class="badge"
+                style="background-color: rgba(245, 158, 11, 0.1); color: var(--secondary); padding: 5px 12px; border-radius: 20px; font-weight: 600; font-size: 13px;">
+                <i class="fa-solid fa-clock" style="margin-right: 5px;"></i> Pending
+            </span>
+            {% endif %}
+        </td>
+        <td style="display: flex; flex-direction: column; gap: 8px;">
+            {% if row['status'] == 'Pending' %}
+            <form action="/ApproveBooking" method="post" style="display: flex; gap: 5px; flex-direction: column; margin-bottom: 0;">
+                <input type="hidden" name="booking_id" value="{{ row['crop_booking_id'] }}">
+                <input type="hidden" name="crop_id" value="{{ row['crop_id'] }}">
+                <div style="display: flex; gap: 5px;">
+                    <input type="number" name="approved_qty" value="1" max="{{ row['balance_qty'] }}" min="1" required style="width: 70px; padding: 4px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" title="Enter amount to approve">
+                    <button type="submit" class="btn btn-solid" style="padding: 6px 12px; font-size: 13px; text-align: center; box-sizing: border-box; flex: 1;">Approve</button>
+                </div>
+            </form>
+            <a href="/RejectBooking/{{ row['crop_booking_id'] }}" class="btn btn-outline btn-reject"
+                style="padding: 6px 12px; font-size: 13px; text-align: center; color: var(--danger, #ef4444); border-color: var(--danger, #ef4444); box-sizing: border-box; width: 100%;">Reject</a>
+            {% else %}
+            <span class="badge"
+                style="background-color: var(--gray-light, #f3f4f6); color: var(--text-light); text-align: center; border-radius: 20px; font-style: italic; padding: 4px 10px; font-size: 12px; width: 100%; box-sizing: border-box;">Processed</span>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+{% endblock %}
