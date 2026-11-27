@@ -1,6 +1,6 @@
 # Agrivision
 
-A smart agriculture management and AI advisory web platform built with **Flask**, **MySQL**, and **Google Gemini AI**. Agrivision connects farmers, agricultural branches (Krishi Bhavans), and administrators in one portal for crop booking, subsidy management, disease detection, and farming guidance.
+A smart agriculture management and AI advisory web platform built with **Python**, **MySQL** and **Google Gemini AI**. Agrivision connects farmers, agricultural branches and administrators in one portal for crop booking, subsidy management, disease detection, and farming guidance.
 
 ## Features
 
